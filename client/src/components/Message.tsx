@@ -1,7 +1,7 @@
 type Props = {
     message: string;
 }
-const Message = ({message}:Props) => {
+const Message:React.FC<Props> = ({message}) => {
     return (
         <>
          <h3>Message is: {message}</h3>
