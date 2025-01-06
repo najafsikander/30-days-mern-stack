@@ -1,15 +1,67 @@
-import User from "../models/User";
-import { info } from "../utils/logger";
+import User, { IUser } from "../models/User";
+import { info,error } from "../utils/logger";
 class UserController {
 
     async getAllUsers(){
         try {
             const users = await User.find();
-            console.log('Users: ',users);
-            info('Data: ' + users);
+            info('Users: ' + users);
             return users;
         } catch (err) {
-            console.warn('Error caught in getAllUsers controller', err);
+            error('Error caught in getAllUsers controller: '+ err);
+            throw err;
+        }
+    }
+
+    async getSingleUser(id: string) {
+        try {
+            const user = await User.findById(id);
+            info('Single user found: '+ user);
+            if(!user) throw 'No user found for provided id';
+            return user;
+        } catch(err) {
+            error('Error caught in getSingleUser controller: '+ err);
+            throw err;
+        }
+    }
+
+    async createUser(user: any) {
+        try {
+            const newUser = new User(user);
+            const savedUser = await newUser.save();
+            info('User created: '+ savedUser);
+            return savedUser;
+        } catch (err) {
+            error('Error caught in createUser controller: '+ err);
+            throw err;
+        }
+    }
+
+    async updateUser(id: string, user: IUser) {
+        try {
+            const existingUser = await User.findById(id);
+            info('Existing user: ' + existingUser);
+            if(!existingUser) throw 'No user found for provided id';
+            existingUser.firstName = user.firstName;
+            existingUser.lastName = user.lastName;
+            existingUser.email = user.email;
+            const updatedUser = await existingUser.save();
+            info('User updated: '+ updatedUser);
+            return updatedUser;
+        } catch (err) {
+            error('Error caught in updateUser controller: '+ err);
+            throw err;
+        }
+    }
+
+    async deleteUser(id:string) {
+        try {
+            const existingUser = await this.getSingleUser(id);
+            const deletedUser = await existingUser.deleteOne();
+            info('User deleted: '+ deletedUser);
+            return deletedUser;
+        } catch(err) {
+            error('Error caught in deleteUser controller: '+ err);
             throw err;
         }
     }
