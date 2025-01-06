@@ -1,4 +1,5 @@
 import { connect } from "mongoose";
+import {info,error} from "./logger";
 
 
 export const openConnection = async () => {
@@ -23,9 +24,10 @@ export const openConnection = async () => {
         });
         if(!connection) throw 'Error connecting to database';
 
-        console.log('Connected to database');
+        info('Connected to database');
     }
-    catch (error) {
-        console.error('Error connecting to database: ', error);
+    catch (err) {
+        error('Error connecting to database: '+ err);
+        throw err;
     }
 }

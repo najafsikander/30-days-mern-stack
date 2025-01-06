@@ -6,6 +6,7 @@ import helmet from "helmet";
 import { openConnection } from './utils/connection';
 import v1 from './routes';
 import reportError from './middlewares/error';
+import { info } from './utils/logger';
 
 //Loading all env variables
 dotenv.config();
@@ -27,6 +28,6 @@ app.use(reportError);
 
 //Starting server & dB connections
 app.listen(port, () => {
-    console.log('listening on port: ' + port);
+    info('listening on port: ' + port);
     openConnection();
 });
