@@ -5,31 +5,27 @@ import morgan from 'morgan';
 import helmet from "helmet";
 import { openConnection } from './utils/connection';
 import v1 from './routes';
+import reportError from './middlewares/error';
 
-// import { openConnection } from './utils/connection';
-
+//Loading all env variables
 dotenv.config();
 
+//Creating express app
 const app:Express = express();
 const port = process.env.PORT || 4200;
 
+//Loading all default middlewares
 app.use(helmet());
 app.use(cors());
 app.use(morgan('combined'));
 app.use(urlencoded({extended: true}));
 app.use(json());
+
+//Loading V1 routes
 app.use('/v1',v1);
+app.use(reportError);
 
-app.get('/', (req:Request, res:Response) => {
-    res.send('Hello World');
-});
-
-app.get('/test', (req:Request, res:Response) => {
-    res.json({
-        message: 'Hello World'
-    });
-});
-
+//Starting server & dB connections
 app.listen(port, () => {
     console.log('listening on port: ' + port);
     openConnection();
