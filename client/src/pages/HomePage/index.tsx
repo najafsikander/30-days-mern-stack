@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useGetAllUsers } from "../../tanstack-queries/users";
 import Button from "../../components/Button";
-import reactLogo from '../../assets/react.svg'
-import viteLogo from '/vite.svg'
 import Form from "./components/Form";
 const HomePage = () => {
   const [inputMessage, setInputMessage] = useState<string>("");
@@ -15,14 +13,6 @@ const HomePage = () => {
   };
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
       <h1>Vite + React</h1>
       <input
         type="text"
