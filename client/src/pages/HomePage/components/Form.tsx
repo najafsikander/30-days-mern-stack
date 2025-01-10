@@ -10,6 +10,7 @@ const Form:React.FC<Props> = ({refetch}) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(UserSchema)
@@ -26,6 +27,7 @@ const Form:React.FC<Props> = ({refetch}) => {
         'user':data
       })
     })
+    reset();
     refetch();
 }
   return (
