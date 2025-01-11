@@ -2,9 +2,10 @@ import User, { IUser } from "../models/userM";
 import { info,error } from "../utils/logger";
 class UserController {
 
-    async getAllUsers(){
+    async getAllUsers(skip:number=0, limit:number=0, sortBy:string='-createdAt'){
         try {
-            const users = await User.find();
+            info(`Skip: ${skip} & limit ${limit}`);
+            const users = await User.find().limit(limit).skip((skip-1)*limit).sort(sortBy);
             info('Users: ' + users);
             return users;
         } catch (err) {

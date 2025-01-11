@@ -8,7 +8,8 @@ const userController = new UserController();
 //Route to fetch all users from DB
 router.get('/',async (req:Request, res:Response, next:NextFunction) => {
     try {
-        const data = await userController.getAllUsers();
+        const {skip,limit,sortBy} = req.query;
+        const data = await userController.getAllUsers(Number(skip), Number(limit), sortBy?.toString());
         log('Data: '+data);
         res.status(200).json(data);
     } catch(err) {
