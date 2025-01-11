@@ -5,31 +5,38 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 type Props = {
   refetch: () => void;
-}
-const Form:React.FC<Props> = ({refetch}) => {
+};
+const Form: React.FC<Props> = ({ refetch }) => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(UserSchema)
+    resolver: zodResolver(UserSchema),
   });
 
   const onSubmit = async (data: FormData) => {
-    console.log("SUCCESS", data);
-    await fetch('http://localhost:8080/v1/users/user', {
-      method: 'POST',
-      headers:{
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        'user':data
-      })
-    })
-    reset();
-    refetch();
-}
+    try {
+      console.log("SUCCESS", data);
+      const result = await fetch("http://localhost:8080/v1/users/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user: data,
+        }),
+      });
+      const jsonReponse = await result.json();
+      if (!result.ok) throw jsonReponse.error;
+      reset();
+      refetch();
+    } catch (error) {
+      console.error("Error in handle submit: ", error);
+      alert(error);
+    }
+  };
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -42,7 +49,7 @@ const Form:React.FC<Props> = ({refetch}) => {
             register={register}
             error={errors.firstName}
           />
-          <br/>
+          <br />
           <FormField
             type="text"
             placeholder="Last Name"
@@ -50,7 +57,7 @@ const Form:React.FC<Props> = ({refetch}) => {
             register={register}
             error={errors.lastName}
           />
-          <br/>
+          <br />
           <FormField
             type="email"
             placeholder="Email"
@@ -58,9 +65,7 @@ const Form:React.FC<Props> = ({refetch}) => {
             register={register}
             error={errors.email}
           />
-          <button type="submit">
-            Submit
-          </button>
+          <button type="submit">Submit</button>
         </div>
       </form>
     </>
