@@ -4,7 +4,10 @@ import Button from "../../components/Button";
 import Form from "./components/Form";
 const HomePage = () => {
   const [inputMessage, setInputMessage] = useState<string>("");
-  const { status, data, error, isFetching, refetch } = useGetAllUsers();
+  const [limit] = useState<number>(2);
+  const [skip] = useState<number>(1);
+  const [sortBy] = useState<string>('-createdAt');
+  const { status, data, error, isFetching, refetch } = useGetAllUsers(skip,limit,sortBy);
 
   console.info({ status, data, error, isFetching });
 
