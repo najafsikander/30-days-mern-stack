@@ -1,4 +1,4 @@
-import User, { IUser } from "../models/User";
+import User, { IUser } from "../models/userM";
 import { info,error } from "../utils/logger";
 class UserController {
 
@@ -31,8 +31,9 @@ class UserController {
             const savedUser = await newUser.save();
             info('User created: '+ savedUser);
             return savedUser;
-        } catch (err) {
+        } catch (err:any) {
             error('Error caught in createUser controller: '+ err);
+            if(err.code === 11000) throw 'Email already exists';
             throw err;
         }
     }
