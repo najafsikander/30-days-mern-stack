@@ -4,7 +4,7 @@ class UserController {
 
     async getAllUsers(skip:number=0, limit:number=0, sortBy:string='-createdAt'){
         try {
-            info(`Skip: ${skip} & limit ${limit}`);
+            info(`Skip: ${skip} & limit ${limit} & sortBy ${sortBy}`);
             const users = await User.find().limit(limit).skip((skip-1)*limit).sort(sortBy);
             info('Users: ' + users);
             return users;
