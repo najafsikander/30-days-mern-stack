@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { FormData, UserSchema } from "../../../utils/types";
 import FormField from "../../../components/FormField";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import Button from "../../../components/Button";
 type Props = {
   refetch: () => void;
 };
@@ -41,7 +41,6 @@ const Form: React.FC<Props> = ({ refetch }) => {
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <h1>Form</h1>
           <FormField
             type="text"
             placeholder="First Name"
@@ -65,7 +64,7 @@ const Form: React.FC<Props> = ({ refetch }) => {
             register={register}
             error={errors.email}
           />
-          <button type="submit">Submit</button>
+          <Button label="Submit" type="submit"/>
         </div>
       </form>
     </>
