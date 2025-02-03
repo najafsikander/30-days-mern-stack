@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetAllUsers } from "../../tanstack-queries/users";
 import Form from "./components/Form";
 import SectionCard from "../../components/SectionCard";
 const HomePage = () => {
   const [limit] = useState<number>(2);
   const [skip] = useState<number>(1);
-  const [sortBy] = useState<string>("-createdAt");
+  const [sortBy,setSortBy] = useState<string>('-createdAt');
   const { status, data, error, isFetching, refetch } = useGetAllUsers(
     skip,
     limit,
@@ -15,6 +15,14 @@ const HomePage = () => {
   const tableHeading: Array<string> = ["First Name", "Last Name", "Email"];
 
   console.info({ status, data, error, isFetching });
+  const toggleSort = ():void => {
+    if(sortBy == '-createdAt') return setSortBy('createdAt');
+    if(sortBy == 'createdAt') return setSortBy('-createdAt');
+    
+  }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {refetch()},[sortBy])
   return (
     <>
       <div className="w-full text-center mt-3">
@@ -24,6 +32,8 @@ const HomePage = () => {
           {status === "pending" && isFetching === true && <p>Loading</p>}
           {status === "error" && isFetching === false && <p>Error</p>}
 
+          {/* Sorting action */}
+          <div className="flex justify-end"><span className="text-slate-800 font-bold underline cursor-pointer" onClick={toggleSort}title="Current Order" >{sortBy === '-createdAt' ? 'Latest Entries': 'Oldest Entries'}</span></div>
           <div className="flex justify-center mt-3">
             <table className="w-full border-2 border-slate-800">
               {/* Table Heading */}
