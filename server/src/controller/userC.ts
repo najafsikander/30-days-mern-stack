@@ -6,8 +6,11 @@ class UserController {
         try {
             info(`Skip: ${skip} & limit ${limit} & sortBy ${sortBy}`);
             const users = await User.find().limit(limit).skip((skip-1)*limit).sort(sortBy);
+            const usersCount = await User.where().countDocuments();
             info('Users: ' + users);
-            return users;
+            info('Users count: ' + usersCount);
+
+            return {users, total: usersCount};
         } catch (err) {
             error('Error caught in getAllUsers controller: '+ err);
             throw err;
