@@ -8,10 +8,15 @@ type User ={
     lastName:string;
     email:string;
 }
+
+type response = {
+    users: User[];
+    total: number;
+}
 export function useGetAllUsers (skip:number, limit:number, sortBy:string)  {
     return useQuery({
         queryKey:['users'],
-        queryFn:async () => fetcher<User[]>(getAllUsers+`?skip=${skip}&limit=${limit}&sortBy=${sortBy}`)
+        queryFn:async () => fetcher<response>(getAllUsers+`?skip=${skip}&limit=${limit}&sortBy=${sortBy}`)
     })
 }
 
