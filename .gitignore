@@ -7,3 +7,4 @@ server/.vscode/*
 server/.env
 client/node_modules/
 client/node_modules/*
+*/.env
