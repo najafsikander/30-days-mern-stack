@@ -15,7 +15,7 @@ export const matchUserPassword = (password: string, hash: string):boolean => {
 export const signJwtToken = (userId:string, hash:string):string => {
     const secret= process.env.SECRET;
     const payload = {userId, hash};
-    const token = jwt.sign(payload,secret!.toString(),{expiresIn: 60 * 2});
+    const token = jwt.sign(payload,secret!.toString(),{expiresIn: '24h'});
     return token;
 }
 
