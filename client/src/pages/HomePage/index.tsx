@@ -52,7 +52,7 @@ const HomePage = () => {
         {/* Table Area */}
         <SectionCard header="Data Grid">
           {status === "pending" && isFetching === true && <p>Loading</p>}
-          {status === "error" && isFetching === false && <p>Error</p>}
+          {status === "error" && isFetching === false && <p>Error: {error.message}</p>}
 
           {/* Sorting action */}
           <div className="flex justify-end">
@@ -79,7 +79,7 @@ const HomePage = () => {
               </thead>
               {/* If rows are empty */}
               <tbody>
-                {(data && data.users.length) === 0 && (
+                {(data && data.users?.length) === 0 && (
                   <tr>
                     <td colSpan={3} className="border-2 border-slate-800">
                       Empty Records
@@ -88,7 +88,7 @@ const HomePage = () => {
                 )}
                 {/* If rows are not empty */}
                 {data &&
-                  data.users.length > 0 &&
+                  data.users?.length > 0 &&
                   data.users.map((user) => (
                     <tr key={user._id}>
                       <td className="border-2 border-slate-800">
