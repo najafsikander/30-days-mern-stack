@@ -5,8 +5,9 @@ const Header:React.FC = () => {
             <nav className="w-full flex justify-between items-center p-4">
                 <a href="/" className="text-2xl font-bold">Logo</a>
                 <ul className="flex space-x-4">
-                    <li><Link to={'/'}>Home Page</Link></li>
-                    <li><Link to={'/auth/login'}>Login Page</Link></li>
+                    <li><Link to={'/'}>Home</Link></li>
+                    <li><Link to={'/auth/login'}>Login</Link></li>
+                    <li><Link to={'/profile'}>Profile</Link></li>
                 </ul>
             </nav>
         </header>
