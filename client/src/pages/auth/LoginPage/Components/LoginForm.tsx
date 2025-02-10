@@ -1,3 +1,4 @@
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate,Link } from "react-router";
@@ -5,9 +6,11 @@ import { useNavigate,Link } from "react-router";
 import { FormData, LoginSchema } from "../../../../utils/types";
 import FormField from "../../../../components/FormField";
 import Button from "../../../../components/Button";
+import { useUser } from "../../../../hooks/useUser";
 
 const LoginForm: React.FC = () => {
     const navigate = useNavigate();
+    const {setUser} = useUser()
   const {
     register,
     handleSubmit,
@@ -35,6 +38,11 @@ const LoginForm: React.FC = () => {
         console.log('Login successful: ', result);
         localStorage.setItem('token',result.user.token);
         localStorage.setItem('userId',result.user._id);
+        const userObj = {
+          id: result.user._id,
+          token: result.user.token
+        };
+        setUser(userObj);
         reset();
         navigate('/');
     } catch (err) {
