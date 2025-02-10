@@ -1,5 +1,5 @@
 import { fetcher } from '../utils/fetcher';
-import { getAllUsers } from './../services-url/users';
+import { getAllUsers,getSingleUser } from './../services-url/users';
 import { useQuery } from "@tanstack/react-query";
 
 type User ={
@@ -7,16 +7,30 @@ type User ={
     firstName:string;
     lastName:string;
     email:string;
+    createdAt?:string;
 }
 
-type response = {
+//Response for getting all users
+type responseMulti = {
     users: User[];
     total: number;
 }
+
+
 export function useGetAllUsers (skip:number, limit:number, sortBy:string)  {
     return useQuery({
         queryKey:['users'],
-        queryFn:async () => fetcher<response>(getAllUsers+`?skip=${skip}&limit=${limit}&sortBy=${sortBy}`)
+        queryFn:async () => fetcher<responseMulti>(getAllUsers+`?skip=${skip}&limit=${limit}&sortBy=${sortBy}`)
+    })
+}
+
+export function useSingleUser(id:string) {
+    return useQuery({
+        queryKey:['user',id],
+        queryFn: async () => {
+            if(!id) return null;
+            return fetcher<User>(getSingleUser(id))
+        }
     })
 }
 
