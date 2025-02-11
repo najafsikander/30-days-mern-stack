@@ -16,6 +16,7 @@ export type FormFieldProps = {
     register: UseFormRegister<FormData>;
     error: FieldError | undefined;
     valueAsNumber?: boolean;
+    readonly?: boolean;
 };
 
 export type ValidFieldNames =
@@ -39,5 +40,11 @@ export const SignupSchema: ZodType<FormData> = z.object({
     firstName: z.string().nonempty().min(3),
     lastName: z.string().nonempty().min(3),
     email: z.string().email(),
-    password: z.string().min(6),
+    password: z.string().min(6)
+});
+
+export const editProfileSchema: ZodType<FormData> = z.object({
+    firstName: z.string().nonempty().min(3),
+    lastName: z.string().nonempty().min(3),
+    email: z.string().email(),
 });
