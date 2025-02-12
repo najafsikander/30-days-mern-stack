@@ -7,6 +7,7 @@ import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
 import ProfilePage from "./pages/ProfilePage";
 import { UserProvider } from "./context/userContext";
+import ChangePassPage from "./pages/ProfilePage/ChangePassPage";
 
 
 function App() {
@@ -20,7 +21,10 @@ function App() {
               <Route path="login" element={<LoginPage />} />
               <Route path="signup" element={<SignupPage />} />
             </Route>
-            <Route path="profile" element={<ProfilePage />} />
+            <Route path="profile">
+              <Route index element={<ProfilePage />}/>
+              <Route path="changePass" element={<ChangePassPage/>}/>
+              </Route>
             <Route path="*" element={<ErrorPage />} />
           </Route>
         </Routes>

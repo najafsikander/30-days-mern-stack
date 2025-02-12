@@ -1,10 +1,13 @@
-const ErrorPage:React.FC = () => {
-    return(
-        <>
-            <h1>Error</h1>
-            <p>Page not found</p>
-        </>
-    )
-}
+import SectionCard from "../../components/SectionCard";
+
+const ErrorPage: React.FC = () => {
+  return (
+    <>
+      <SectionCard header="Error 404">
+        <p>Page not found</p>
+      </SectionCard>
+    </>
+  );
+};
 
 export default ErrorPage;

@@ -29,16 +29,20 @@ const ProfilePage: React.FC = () => {
     defaultValues: data || undefined,
   });
 
-  const handleLogout = () => {
+  const handleLogout = ():void => {
     logout();
     navigate("/auth/login");
   };
 
-  const toggleReadyOnlyMode = () => {
+  const toggleReadyOnlyMode = ():void => {
     setIsReadyOnly((value) => !value);
   };
+  
+  const goToChangePassPage = ():void => {
+    navigate('/profile/changePass');
+  }
 
-  const editUser = async (data: FormData) => {
+  const editUser = async (data: FormData):Promise<void> => {
     try {
         const request = {
             user: data
@@ -90,6 +94,7 @@ const ProfilePage: React.FC = () => {
           <button
             title="Change Password"
             type="button"
+            onClick={goToChangePassPage}
             className="bg-white border-2 mr-4 border-slate-700 rounded-[60px] p-1 shadow-2xl cursor-pointer hover:bg-slate-700"
           >
             <LockClosedIcon
