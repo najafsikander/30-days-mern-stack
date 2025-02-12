@@ -27,4 +27,16 @@ router.post('/signup', async (req:Request, res:Response, next:NextFunction) => {
     }
 });
 
+router.patch('/changePassword/:id', async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const {id} = req.params;
+        const {oldPassword, password} = req.body;
+        const result = await authController.changePassword(id,oldPassword,password);
+        res.status(201).json({message: 'Changed password successfully',user:result});
+    } catch (err) {
+        warn('Error caught in change password route: '+err);
+        next(err);
+    }
+});
+
 export default router;
