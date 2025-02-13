@@ -58,3 +58,7 @@ export const changePassSchema: ZodType<FormData> = z.object({
     password: z.string().min(6),
     confirmPassword: z.string().min(6)
 }).refine(({password,confirmPassword}) => password === confirmPassword, {message:'Passwords do not match', path: ['confirmPassword']});
+
+export const ForgotPasswordSchema: ZodType<FormData> = z.object({
+    email: z.string().email()
+});

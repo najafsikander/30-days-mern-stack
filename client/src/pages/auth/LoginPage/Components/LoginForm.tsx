@@ -72,6 +72,7 @@ const LoginForm: React.FC = () => {
         <Button type="submit" label="Login"></Button>
       </form>
       <p>If you dont have an account, <Link className="underline text-indigo-800 font-bold" to={'/auth/signup'} title="Signup">Click Here</Link> to SignUp</p>
+      <p>If you have forgotten password,<Link className="underline text-indigo-800 font-bold" to={'/auth/forgotPassword'} title="Forgot Password">Click Here</Link> to recover account</p>
     </>
   );
 };
