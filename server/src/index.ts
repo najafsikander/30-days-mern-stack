@@ -10,7 +10,7 @@ import { info } from './utils/logger';
 import protectRoutes from './middlewares/jwt-verification';
 
 //Loading all env variables
-dotenv.config();
+import './utils/config';
 
 //Creating express app
 const app:Express = express();

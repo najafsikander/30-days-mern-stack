@@ -39,4 +39,15 @@ router.patch('/changePassword/:id', async (req:Request, res:Response, next:NextF
     }
 });
 
+router.post('/sendResetPasswordMail',async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const {email} = req.body;
+        const message = await authController.sendResetPasswordMail(email);
+        res.status(200).json({message});
+    } catch (err) {
+        warn('Error caught in sendResetPasswordMail route: '+err);
+        next(err);
+    }
+});
+
 export default router;

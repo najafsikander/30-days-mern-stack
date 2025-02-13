@@ -1,15 +1,12 @@
 import { connect } from "mongoose";
 import {info,error} from "./logger";
+import { DB_APP, DB_CLUSTER, DB_NAME, DB_PASSWORD, DB_USER } from "./config";
 
 
 export const openConnection = async () => {
 
 
-    const DB_USER = process.env.DB_USER;
-    const DB_PASSWORD = process.env.DB_PASSWORD;
-    const DB_CLUSTER = process.env.DB_CLUSTER;
-    const DB_APP = process.env.DB_APP;
-    const DB_NAME = process.env.DB_NAME;
+    
 
     const mongoURL: string = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_CLUSTER}/?retryWrites=true&w=majority&appName=${DB_APP}`;
     

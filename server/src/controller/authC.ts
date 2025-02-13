@@ -2,6 +2,7 @@ import User from "../models/userM";
 import { info,error } from "../utils/logger";
 import { IUser } from "../models/userM";
 import { hashUserPassword,matchUserPassword, signJwtToken } from "../utils/auth";
+import { sendResetPasswordMail } from "../utils/sendMail";
 
 class AuthController {
     async login (email:string, password: string) {
@@ -56,6 +57,20 @@ class AuthController {
             return savedUser;
         } catch (err) {
             error('Error caught in changePassword controller: '+err);
+            throw err;
+        }
+    }
+
+    async sendResetPasswordMail(email: string) {
+        try {
+            const user = await User.findOne({email});
+            if(!user) throw 'User not found';
+            const mailResponse = await sendResetPasswordMail(email);
+            info('Mail response: '+mailResponse);
+            if(!mailResponse) throw 'Email not sent: ' + mailResponse;
+            return 'Reset password sent successfully;'
+        } catch (err) {
+            error('Error caught in sendResetPasswordMail:' + err);
             throw err;
         }
     }
