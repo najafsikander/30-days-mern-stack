@@ -8,6 +8,7 @@ export type FormData = {
     oldPassword?: string;
     password?: string;
     confirmPassword?: string;
+    token?: string;
 }
 
 
@@ -28,6 +29,7 @@ export type ValidFieldNames =
   | "oldPassword"
   | "password"
   | "confirmPassword"
+  | "token"
 
 export const UserSchema: ZodType<FormData> = z.object({
     firstName: z.string().nonempty().min(3),
@@ -53,8 +55,13 @@ export const editProfileSchema: ZodType<FormData> = z.object({
     email: z.string().email(),
 });
 
-export const changePassSchema: ZodType<FormData> = z.object({
+export const ChangePassSchema: ZodType<FormData> = z.object({
     oldPassword: z.string().min(6),
+    password: z.string().min(6),
+    confirmPassword: z.string().min(6)
+}).refine(({password,confirmPassword}) => password === confirmPassword, {message:'Passwords do not match', path: ['confirmPassword']});
+
+export const NewPassSchema: ZodType<FormData> = z.object({
     password: z.string().min(6),
     confirmPassword: z.string().min(6)
 }).refine(({password,confirmPassword}) => password === confirmPassword, {message:'Passwords do not match', path: ['confirmPassword']});

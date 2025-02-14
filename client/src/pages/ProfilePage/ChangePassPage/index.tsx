@@ -1,31 +1,39 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import SectionCard from "../../../components/SectionCard";
-import { changePassSchema, FormData } from "../../../utils/types";
+import { ChangePassSchema, FormData, NewPassSchema } from "../../../utils/types";
 import { useForm } from "react-hook-form";
 import FormField from "../../../components/FormField";
 import Button from "../../../components/Button";
 import { useNavigate } from "react-router";
-import { changeUserPassword } from "../../../services-url/users";
+import { changeUserPassword, newUserPassword } from "../../../services-url/users";
 import { useUser } from "../../../hooks/useUser";
 
-const ChangePassPage = () => {
+type Props ={
+    forgotPass?: boolean;
+    token?: string;
+};
+const ChangePassPage:React.FC<Props> = ({forgotPass=false,token}) => {
 
     const {user,setUser} = useUser();
     const navigate = useNavigate();
 
     const {register, handleSubmit, formState: {errors}, reset} = useForm<FormData>({
-        resolver: zodResolver(changePassSchema)
+        resolver: zodResolver(!forgotPass? ChangePassSchema:NewPassSchema)
     });
 
+    //Change User Password
     const changePassword = async (data:FormData):Promise<void> => {
         try {
-            const response = await fetch(changeUserPassword(user!.id), {
+            const request = data;
+            if(!forgotPass) request.token = token;
+            const url = changeUserPassword(user!.id);
+            const response = await fetch(url, {
                 method:'PATCH',
                 headers: {
                     'content-type': 'application/json',
                     'Authorization': 'Bearer '+user!.token
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(request)
             });
 
             console.log('Response: ' + response);
@@ -47,21 +55,51 @@ const ChangePassPage = () => {
         }
     }
 
+    //Recover User Account Via Forgot Password
+    const recoverAccount = async (data:FormData):Promise<void> => {
+        try {
+            const request = data;
+            request.token = token;
+            const url = newUserPassword;
+            const response = await fetch(url, {
+                method:'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(request)
+            });
+
+            console.log('Response: ' + response);
+            const result = await response.json()
+            console.log('Result:' + result);
+            if(!response.ok) throw result.error;
+            alert('Password reset successfully');
+            reset();
+            navigate('/auth/login');
+        } catch (err) {
+            console.warn('Error caught while resetting password: ', err);
+            alert('Error Occured: ' + err);
+        }
+    }
+
     const goBackToPreviousPage = () => {
         navigate(-1);
     }
 
     return (<>
-        <SectionCard header="Change Password">
+        <SectionCard header={!forgotPass?"Change Password":''}>
             <div className="flex w-full justify-center">
                 <div className="flex flex-col">
-                    <form onSubmit={handleSubmit(changePassword)}>
-                        <FormField
-                        name="oldPassword"
-                        type="password"
-                        placeholder="Old Password"
-                        register={register}
-                        error={errors.oldPassword}/>
+                    <form onSubmit={handleSubmit(!forgotPass?changePassword: recoverAccount)}>
+                        {
+                            !forgotPass &&
+                            <FormField
+                            name="oldPassword"
+                            type="password"
+                            placeholder="Old Password"
+                            register={register}
+                            error={errors.oldPassword}/>
+                        }
 
                         <FormField
                         name="password"
@@ -78,7 +116,10 @@ const ChangePassPage = () => {
                         error={errors.confirmPassword}/>
 
                         <div className="flex flex-row justify-center gap-2">
-                            <Button type="button" label="Cancel" onClick={goBackToPreviousPage}/>
+                            {
+                                !forgotPass &&
+                                <Button type="button" label="Cancel" onClick={goBackToPreviousPage}/>
+                            }
                             <Button type="submit" label="Submit"/>
                         </div>
                     </form>

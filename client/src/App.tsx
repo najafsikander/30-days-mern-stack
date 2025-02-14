@@ -9,6 +9,7 @@ import ProfilePage from "./pages/ProfilePage";
 import { UserProvider } from "./context/userContext";
 import ChangePassPage from "./pages/ProfilePage/ChangePassPage";
 import ForgotPasswordPage from "./pages/auth/ForgotPassPage";
+import NewPassPage from "./pages/auth/ForgotPassPage/NewPassPage";
 
 
 function App() {
@@ -21,7 +22,8 @@ function App() {
             <Route path="auth">
               <Route path="login" element={<LoginPage />} />
               <Route path="signup" element={<SignupPage />} />
-              <Route path = "forgotPassword" element={<ForgotPasswordPage />} />
+              <Route path="forgotPassword" element={<ForgotPasswordPage />} />
+              <Route path="newPassword" element={<NewPassPage/>}/>
             </Route>
             <Route path="profile">
               <Route index element={<ProfilePage />}/>
