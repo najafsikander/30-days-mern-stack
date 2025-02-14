@@ -7,7 +7,8 @@ const protectRoutes = () => {
         path: [
             '/v1/auth/login',
             '/v1/auth/signup',
-            '/v1/auth/sendResetPasswordMail'
+            '/v1/auth/sendResetPasswordMail',
+            '/v1/auth/newUserPassword'
         ]
     });
 }

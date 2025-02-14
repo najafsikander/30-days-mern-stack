@@ -65,12 +65,32 @@ class AuthController {
         try {
             const user = await User.findOne({email});
             if(!user) throw 'User not found';
-            const mailResponse = await sendResetPasswordMail(email);
+            const signedToken = signJwtToken(user._id.toString(),user.hash);
+            user.token = signedToken;
+            await user.save();
+            const mailResponse = await sendResetPasswordMail(email, user.token);
             info('Mail response: '+mailResponse);
             if(!mailResponse) throw 'Email not sent: ' + mailResponse;
             return 'Reset password sent successfully;'
         } catch (err) {
             error('Error caught in sendResetPasswordMail:' + err);
+            throw err;
+        }
+    }
+
+    async newUserPassword(token: string,password: string) {
+        try {
+            const user = await User.findOne({token});
+            info('User: '+user);
+            if(!user) throw 'User not found';
+            const hashedPassword = hashUserPassword(password);
+            user.hash = hashedPassword;
+            const signedToken = signJwtToken(user._id.toString(), user.hash);
+            user.token = signedToken;
+            await user.save();
+            return 'Password reset successfully';
+        } catch (err) {
+            error('Error caught in newUserPassword: ' + err);
             throw err;
         }
     }

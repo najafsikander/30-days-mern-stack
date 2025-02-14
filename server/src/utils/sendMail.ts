@@ -11,13 +11,15 @@ const transport = nodemailer.createTransport({
     
 });
 
-export const sendResetPasswordMail = async (receipientEmail:string) => {
+export const sendResetPasswordMail = async (receipientEmail:string,token:string) => {
     const mailResponse = await transport.sendMail({
         from : MAIL_SENDER,
         to: receipientEmail,
         subject: 'Reset Password',
-        text: 'http://localhost:5173/auth/login',
-        html: '<p>Body Here</p>'
+        text: 'http://localhost:5173/auth/newPassword?token='+token,
+        html: `<p>Body Here</p>
+        <a href="http://localhost:5173/auth/newPassword?token=${token}">click here</a>
+        `
     });
     return mailResponse;
 }

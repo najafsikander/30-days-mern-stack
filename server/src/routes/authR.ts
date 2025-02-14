@@ -50,4 +50,15 @@ router.post('/sendResetPasswordMail',async (req:Request, res:Response, next:Next
     }
 });
 
+router.post('/newUserPassword',async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const {token,password} = req.body;
+        const message = await authController.newUserPassword(token,password);
+        res.status(200).json({message});
+    } catch (err) {
+        warn('Error caught in newUserPassword route: '+err);
+        next(err);
+    }
+})
+
 export default router;
