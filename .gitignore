@@ -5,6 +5,8 @@ server/dist/*
 server/.vscode/
 server/.vscode/*
 server/.env
+server/public
+server/public/*
 client/node_modules/
 client/node_modules/*
 */.env
