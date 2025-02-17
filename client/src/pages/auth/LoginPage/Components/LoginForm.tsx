@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate,Link } from "react-router";
 
-import { FormData, LoginSchema } from "../../../../utils/types";
+import { MainFormData, LoginSchema } from "../../../../utils/types";
 import FormField from "../../../../components/FormField";
 import Button from "../../../../components/Button";
 import { useUser } from "../../../../hooks/useUser";
@@ -16,11 +16,11 @@ const LoginForm: React.FC = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<MainFormData>({
     resolver: zodResolver(LoginSchema),
   });
 
-  const onSubmit = async (data:FormData) => {
+  const onSubmit = async (data:MainFormData) => {
     try {
         console.log("SUCCESS", data);
         const request = data;

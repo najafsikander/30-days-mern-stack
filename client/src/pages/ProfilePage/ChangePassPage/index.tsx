@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import SectionCard from "../../../components/SectionCard";
-import { ChangePassSchema, FormData, NewPassSchema } from "../../../utils/types";
+import { ChangePassSchema, MainFormData, NewPassSchema } from "../../../utils/types";
 import { useForm } from "react-hook-form";
 import FormField from "../../../components/FormField";
 import Button from "../../../components/Button";
@@ -17,12 +17,12 @@ const ChangePassPage:React.FC<Props> = ({forgotPass=false,token}) => {
     const {user,setUser} = useUser();
     const navigate = useNavigate();
 
-    const {register, handleSubmit, formState: {errors}, reset} = useForm<FormData>({
+    const {register, handleSubmit, formState: {errors}, reset} = useForm<MainFormData>({
         resolver: zodResolver(!forgotPass? ChangePassSchema:NewPassSchema)
     });
 
     //Change User Password
-    const changePassword = async (data:FormData):Promise<void> => {
+    const changePassword = async (data:MainFormData):Promise<void> => {
         try {
             const request = data;
             if(!forgotPass) request.token = token;
@@ -56,7 +56,7 @@ const ChangePassPage:React.FC<Props> = ({forgotPass=false,token}) => {
     }
 
     //Recover User Account Via Forgot Password
-    const recoverAccount = async (data:FormData):Promise<void> => {
+    const recoverAccount = async (data:MainFormData):Promise<void> => {
         try {
             const request = data;
             request.token = token;

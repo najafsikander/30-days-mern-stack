@@ -6,16 +6,20 @@ import { useSingleUser } from "../../tanstack-queries/users";
 import FormField from "../../components/FormField";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormData, editProfileSchema } from "../../utils/types";
-import { LockClosedIcon, PencilSquareIcon } from "@heroicons/react/16/solid";
-import { useEffect, useState } from "react";
-import { updateSingleUser } from "../../services-url/users";
+import { MainFormData, editProfileSchema } from "../../utils/types";
+import {
+  LockClosedIcon,
+  PencilSquareIcon,
+  CameraIcon,
+} from "@heroicons/react/16/solid";
+import { useEffect, useRef, useState } from "react";
+import { updateSingleUser, updateUserProfilePicture } from "../../services-url/users";
 
 const ProfilePage: React.FC = () => {
   const { user, logout } = useUser();
   const navigate = useNavigate();
   const [isReadOnly, setIsReadyOnly] = useState<boolean>(true);
-  const { status, data, error, isFetching,refetch } = useSingleUser(
+  const { status, data, error, isFetching, refetch } = useSingleUser(
     user ? user.id : ""
   );
 
@@ -24,47 +28,86 @@ const ProfilePage: React.FC = () => {
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm<FormData>({
+  } = useForm<MainFormData>({
     resolver: zodResolver(editProfileSchema),
     defaultValues: data || undefined,
   });
 
-  const handleLogout = ():void => {
+  const imageUploadref = useRef<HTMLInputElement | null>(null);
+
+  const handleLogout = (): void => {
     logout();
     navigate("/auth/login");
   };
 
-  const toggleReadyOnlyMode = ():void => {
+  const toggleReadyOnlyMode = (): void => {
     setIsReadyOnly((value) => !value);
   };
-  
-  const goToChangePassPage = ():void => {
-    navigate('/profile/changePass');
+
+  const goToChangePassPage = (): void => {
+    navigate("/profile/changePass");
+  };
+
+  const imageButtonAction = (action:string, target?:EventTarget & HTMLInputElement) => {
+    if(action  === 'Open') return imageUploadref.current?.click();
+
+    if(action === 'Change') {
+      if(target!.files) {
+        console.log('E: ',target!.files[0]);
+        uploadProfilePicture(target!.files[0]);
+      }
+    }
   }
 
-  const editUser = async (data: FormData):Promise<void> => {
+  const uploadProfilePicture = async (file:File) => {
     try {
-        const request = {
-            user: data
-        };
-        const response = await fetch(updateSingleUser(user!.id), {
-            method: "PUT",
-            headers: {
-                'Authorization':'Bearer '+user?.token,
-                'content-type': 'application/json'
-            },
-            body:JSON.stringify(request)
-        });
+      const id = user!.id;
+      const token = user!.token;
+      const formData = new FormData();
+      formData.append("profilePic",file);
+      const response = await fetch(updateUserProfilePicture(id), {
+        method: 'PATCH',
+        headers: {
+          Authorization: "Bearer " + token
+        },
+        body: formData
+      });
 
-        console.log('Response: ' + response);
-        const result = await response.json();
-        if (!response.ok) throw result.error;
-        console.log('result: ' + result);
-        alert('Data updated successfully');
-        refetch();
+      console.log('Response: ',response);
+      const result = await response.json();
+      console.log('result: ',result);
+      if(!response.ok) throw result.error;
+      alert('Saved successfully');
+      refetch();
     } catch (err) {
-        console.warn('Error caught while editing user: ', err);
-        alert(err);
+      console.warn('Error caught while uploading profile picture: ', err);
+      alert(err);
+    }
+  }
+ 
+  const editUser = async (data: MainFormData): Promise<void> => {
+    try {
+      const request = {
+        user: data,
+      };
+      const response = await fetch(updateSingleUser(user!.id), {
+        method: "PUT",
+        headers: {
+          Authorization: "Bearer " + user?.token,
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(request),
+      });
+
+      console.log("Response: " + response);
+      const result = await response.json();
+      if (!response.ok) throw result.error;
+      console.log("result: " + result);
+      alert("Data updated successfully");
+      refetch();
+    } catch (err) {
+      console.warn("Error caught while editing user: ", err);
+      alert(err);
     }
   };
   useEffect(() => {
@@ -90,6 +133,7 @@ const ProfilePage: React.FC = () => {
   return (
     <>
       <SectionCard header="Profile">
+        {/* Top right button area to change password or enable edit profile */}
         <section className="w-full flex flex-row-reverse">
           <button
             title="Change Password"
@@ -114,15 +158,34 @@ const ProfilePage: React.FC = () => {
             />
           </button>
         </section>
+
+        {/* Profile picture and form area */}
         <div className="w-full flex flex-row justify-center">
           <div className="flex flex-col">
+            {/* Profile Picture */}
             <div className="w-full flex justify-center">
+              <div className="relative left-9 top-2">
+                <input
+                  accept="image/*"
+                  id="select-photo-btn"
+                  type="file"
+                  hidden
+                  onChange={(e) => imageButtonAction('Change',e.target)}
+                  ref={imageUploadref}
+                />
+                <label htmlFor="select-photo-btn">
+                  <button type="button" className="bg-slate-700 border-2 rounded-3xl p-2 hover:bg-white hover border-slate-700" onClick={() => imageButtonAction('Open')}>
+                    <CameraIcon className="size-5 text-white hover:text-slate-700" />
+                  </button>
+                </label>
+              </div>
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                src={!data?.profilePic ?"https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png":`http://localhost:8080${data?.profilePic}`}
                 alt="profile picture"
-                className="w-28 border-2 border-slate-800 rounded-[80px] m-2 shadow-lg"
+                className="min-w-sm max-w-sm w-sm  border-2 border-slate-800 rounded-[80px] m-2 shadow-lg"
               />
             </div>
+            {/* User Form (Both read only & editable) */}
             <form
               onSubmit={handleSubmit((formData) => {
                 console.log("Submitting form:", formData);

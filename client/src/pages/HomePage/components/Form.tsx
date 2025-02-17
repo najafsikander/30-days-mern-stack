@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { FormData, UserSchema } from "../../../utils/types";
+import { MainFormData, UserSchema } from "../../../utils/types";
 import FormField from "../../../components/FormField";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "../../../components/Button";
@@ -12,11 +12,11 @@ const Form: React.FC<Props> = ({ refetch }) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<MainFormData>({
     resolver: zodResolver(UserSchema),
   });
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: MainFormData) => {
     try {
       console.log("SUCCESS", data);
       const result = await fetch("http://localhost:8080/v1/users/user", {

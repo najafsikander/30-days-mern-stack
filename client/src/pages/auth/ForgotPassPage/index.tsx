@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import SectionCard from "../../../components/SectionCard";
-import { ForgotPasswordSchema, FormData } from "../../../utils/types";
+import { ForgotPasswordSchema, MainFormData } from "../../../utils/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormField from "../../../components/FormField";
 import Button from "../../../components/Button";
@@ -15,11 +15,11 @@ const ForgotPasswordPage = () => {
         formState: {errors},
         reset,
         handleSubmit
-    } = useForm<FormData>({
+    } = useForm<MainFormData>({
         resolver: zodResolver(ForgotPasswordSchema)
     });
 
-    const resetPassword = async (data: FormData): Promise<void> => {
+    const resetPassword = async (data: MainFormData): Promise<void> => {
         try {
             console.log("Successfully reset password: ", data);
             const response = await fetch(resetUserPassword, {

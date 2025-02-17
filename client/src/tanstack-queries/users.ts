@@ -8,6 +8,7 @@ type User ={
     lastName:string;
     email:string;
     createdAt?:string;
+    profilePic?:string;
 }
 
 //Response for getting all users

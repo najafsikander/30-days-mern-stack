@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate,Link } from "react-router";
-import { SignupSchema, FormData } from "../../../../utils/types";
+import { SignupSchema, MainFormData } from "../../../../utils/types";
 import FormField from "../../../../components/FormField";
 import Button from "../../../../components/Button";
 
@@ -12,10 +12,10 @@ const SignupForm: React.FC = () => {
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<MainFormData>({
     resolver: zodResolver(SignupSchema),
   });
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: MainFormData) => {
     console.info("SUCCESS", data);
     try {
         const request = {

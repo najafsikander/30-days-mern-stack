@@ -1,7 +1,7 @@
 import { FieldError, UseFormRegister } from "react-hook-form";
 import { z, ZodType } from "zod";
 
-export type FormData = {
+export type MainFormData = {
     firstName?: string;
     lastName?: string;
     email?: string;
@@ -16,7 +16,7 @@ export type FormFieldProps = {
     type: string;
     placeholder: string;
     name: ValidFieldNames;
-    register: UseFormRegister<FormData>;
+    register: UseFormRegister<MainFormData>;
     error: FieldError | undefined;
     valueAsNumber?: boolean;
     readonly?: boolean;
@@ -31,41 +31,41 @@ export type ValidFieldNames =
   | "confirmPassword"
   | "token"
 
-export const UserSchema: ZodType<FormData> = z.object({
+export const UserSchema: ZodType<MainFormData> = z.object({
     firstName: z.string().nonempty().min(3),
     lastName: z.string().nonempty().min(3),
     email: z.string().email(),
 });
 
-export const LoginSchema: ZodType<FormData> = z.object({
+export const LoginSchema: ZodType<MainFormData> = z.object({
     email: z.string().email(),
     password: z.string().min(6),
 });
 
-export const SignupSchema: ZodType<FormData> = z.object({
+export const SignupSchema: ZodType<MainFormData> = z.object({
     firstName: z.string().nonempty().min(3),
     lastName: z.string().nonempty().min(3),
     email: z.string().email(),
     password: z.string().min(6)
 });
 
-export const editProfileSchema: ZodType<FormData> = z.object({
+export const editProfileSchema: ZodType<MainFormData> = z.object({
     firstName: z.string().nonempty().min(3),
     lastName: z.string().nonempty().min(3),
     email: z.string().email(),
 });
 
-export const ChangePassSchema: ZodType<FormData> = z.object({
+export const ChangePassSchema: ZodType<MainFormData> = z.object({
     oldPassword: z.string().min(6),
     password: z.string().min(6),
     confirmPassword: z.string().min(6)
 }).refine(({password,confirmPassword}) => password === confirmPassword, {message:'Passwords do not match', path: ['confirmPassword']});
 
-export const NewPassSchema: ZodType<FormData> = z.object({
+export const NewPassSchema: ZodType<MainFormData> = z.object({
     password: z.string().min(6),
     confirmPassword: z.string().min(6)
 }).refine(({password,confirmPassword}) => password === confirmPassword, {message:'Passwords do not match', path: ['confirmPassword']});
 
-export const ForgotPasswordSchema: ZodType<FormData> = z.object({
+export const ForgotPasswordSchema: ZodType<MainFormData> = z.object({
     email: z.string().email()
 });
