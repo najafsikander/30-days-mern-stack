@@ -1,5 +1,8 @@
+import { FileArray } from "express-fileupload";
 import User, { IUser } from "../models/userM";
 import { info,error } from "../utils/logger";
+import { __dirname, getUploadPath } from "../utils/directory";
+import path from "path";
 class UserController {
 
     async getAllUsers(skip:number=0, limit:number=0, sortBy:string='-createdAt'){
@@ -67,6 +70,26 @@ class UserController {
             return deletedUser;
         } catch(err) {
             error('Error caught in deleteUser controller: '+ err);
+            throw err;
+        }
+    }
+
+    async updateUserProfilePicture(id:string, files:any) {
+        try {
+            // const data = JSON.parse(body);
+            if(!files || !files.profilePic) throw 'No profile picture attached';
+            const user = await User.findById(id);
+            if(!user) throw 'User not found!';
+            const profilePic = files.profilePic;
+            const uploadPath = getUploadPath(profilePic.name);
+            const result = await profilePic.mv(uploadPath);
+            info('Result: '+result);
+            const profilePicPath = `/uploads/${profilePic.name}`;
+            user.profilePic = profilePicPath;
+            const newUserDetails = await user.save();
+            return newUserDetails;
+        } catch (err) {
+            error('Error caught in updateUser controller: ' + err);
             throw err;
         }
     }

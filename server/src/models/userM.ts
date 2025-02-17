@@ -7,6 +7,7 @@ export interface IUser {
     hash: string;
     token: string;
     password?: string;
+    profilePic?: string;
 }
 
 const userSchema = new Schema<IUser>({
@@ -14,7 +15,8 @@ const userSchema = new Schema<IUser>({
     lastName: {type: String, required: true},
     email: {type: String, required: true, unique: true, index:true, dropDups: true},
     hash: {type: String, required: true},
-    token: {type: String, required: false}
+    token: {type: String, required: false},
+    profilePic: {type: String}
 },
 {
     timestamps:true

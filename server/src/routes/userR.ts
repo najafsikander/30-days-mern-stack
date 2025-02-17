@@ -66,4 +66,16 @@ router.delete('/:id', async (req:Request, res:Response, next:NextFunction) => {
         next(err);
     }
 });
+
+router.patch('/updateUserProfilePicture/:id', async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const {id} = req.params;
+        const updatedResponse = await userController.updateUserProfilePicture(id,req.files);
+        log('User updated: '+updatedResponse);
+        res.status(200).json(updatedResponse);
+    } catch (err) {
+        warn('Error caught in update profile picture route: ' + err);
+        next(err);
+    }
+});
 export default router;
