@@ -14,6 +14,7 @@ import {
 } from "@heroicons/react/16/solid";
 import { useEffect, useRef, useState } from "react";
 import { updateSingleUser, updateUserProfilePicture } from "../../services-url/users";
+import { showConfirmationDialog, showResultDialog } from "../../utils/sweetalert";
 
 const ProfilePage: React.FC = () => {
   const { user, logout } = useUser();
@@ -48,13 +49,15 @@ const ProfilePage: React.FC = () => {
     navigate("/profile/changePass");
   };
 
-  const imageButtonAction = (action:string, target?:EventTarget & HTMLInputElement) => {
+  const imageButtonAction = async (action:string, target?:EventTarget & HTMLInputElement) => {
     if(action  === 'Open') return imageUploadref.current?.click();
 
     if(action === 'Change') {
       if(target!.files) {
         console.log('E: ',target!.files[0]);
-        uploadProfilePicture(target!.files[0]);
+        const confirmationRes = await showConfirmationDialog();
+        console.log('Confirmation: ',confirmationRes);
+        if(confirmationRes.isConfirmed) uploadProfilePicture(target!.files[0]);
       }
     }
   }
@@ -77,7 +80,7 @@ const ProfilePage: React.FC = () => {
       const result = await response.json();
       console.log('result: ',result);
       if(!response.ok) throw result.error;
-      alert('Saved successfully');
+      showResultDialog("Success","Profile Picture Uploaded Successfully", "success");
       refetch();
     } catch (err) {
       console.warn('Error caught while uploading profile picture: ', err);

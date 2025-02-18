@@ -1,19 +1,31 @@
-import Swal from 'sweetalert2'
+
+import Swal, { SweetAlertIcon } from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 const MySwal = withReactContent(Swal)
 
-const test = () => {
-    MySwal.fire({
-        title: 'Hello World',
-        didOpen: () => {
-          // `MySwal` is a subclass of `Swal` with all the same instance & static methods
-          MySwal.showLoading()
-        },
-      }).then(() => {
-        return MySwal.fire('It works')
-      })
-      
+
+const showConfirmationDialog = async () => {
+  const result = await MySwal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes"
+  });
+
+  return result;
 }
 
-export {test};
+const showResultDialog = (title:string,message : string, icon:SweetAlertIcon) => {
+  MySwal.fire({
+    title: title,
+    icon: icon,
+    text:message,
+    draggable: true
+  });
+}
+
+export { showConfirmationDialog,showResultDialog };
