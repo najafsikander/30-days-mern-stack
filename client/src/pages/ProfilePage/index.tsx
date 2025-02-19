@@ -185,7 +185,7 @@ const ProfilePage: React.FC = () => {
               <img
                 src={!data?.profilePic ?"https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png":`http://localhost:8080${data?.profilePic}`}
                 alt="profile picture"
-                className="min-w-sm max-w-sm w-sm  border-2 border-slate-800 rounded-[80px] m-2 shadow-lg"
+                className="w-[100px] h-[100px] align-middle  border-2 border-slate-800 rounded-[50%] m-2 shadow-lg"
               />
             </div>
             {/* User Form (Both read only & editable) */}
