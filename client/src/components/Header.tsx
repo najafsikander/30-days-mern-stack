@@ -13,7 +13,10 @@ const Header:React.FC = () => {
                     <li><Link to={'/auth/login'}>Login</Link></li>
                     }
                     {user &&
-                    <li><Link to={'/profile'}>Profile</Link></li>}
+                    <>
+                    <li><Link to={'/chat/private'}>Chat</Link></li>
+                    <li><Link to={'/profile'}>Profile</Link></li>
+                    </>}
                 </ul>
             </nav>
         </header>

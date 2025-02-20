@@ -10,6 +10,7 @@ import { UserProvider } from "./context/userContext";
 import ChangePassPage from "./pages/ProfilePage/ChangePassPage";
 import ForgotPasswordPage from "./pages/auth/ForgotPassPage";
 import NewPassPage from "./pages/auth/ForgotPassPage/NewPassPage";
+import PrivateChatPage from "./pages/chat/private";
 
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
               <Route path="signup" element={<SignupPage />} />
               <Route path="forgotPassword" element={<ForgotPasswordPage />} />
               <Route path="newPassword" element={<NewPassPage/>}/>
+            </Route>
+            <Route path="chat">
+              <Route path="private" element={<PrivateChatPage/>}/>
             </Route>
             <Route path="profile">
               <Route index element={<ProfilePage />}/>
