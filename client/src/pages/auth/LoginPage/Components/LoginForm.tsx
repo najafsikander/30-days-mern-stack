@@ -38,8 +38,10 @@ const LoginForm: React.FC = () => {
         console.log('Login successful: ', result);
         localStorage.setItem('token',result.user.token);
         localStorage.setItem('userId',result.user._id);
+        localStorage.setItem('user',JSON.stringify(result.user));
         const userObj = {
           id: result.user._id,
+          details: result.user,
           token: result.user.token
         };
         setUser(userObj);
