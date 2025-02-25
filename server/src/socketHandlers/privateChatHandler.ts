@@ -8,6 +8,7 @@ type User = {
 
 type ChatMessage = {
     userId: string;
+    name:string;
     message: string;
     msgTime: string;
 }
