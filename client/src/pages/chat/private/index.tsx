@@ -10,6 +10,7 @@ type User = {
 
 type ChatMessage = {
   userId: string;
+  name:string;
   message: string;
   msgTime: string;
 };
@@ -116,11 +117,20 @@ const PrivateChatPage: React.FC = () => {
       roomName: "private-chat-1",
       chatMessage: {
         userId: user?.id,
+        name: `${user?.details?.firstName} ${user?.details?.lastName}`,
         message: chatInput,
         msgTime: new Date().toString(),
       },
     });
     setChatInput("");
+  };
+
+  const chatBubble = {
+    bgSlate: "bg-slate-800",
+    bgGreen: "bg-green-800",
+    row: "row",
+    justEnd: "justify-end",
+    justStart: "justify-start",
   };
 
   return (
@@ -132,14 +142,30 @@ const PrivateChatPage: React.FC = () => {
           <div className="h-[70vh] flex flex-col w-3/4">
             {/* Message area */}
             <section className="basis-[90%] border-2 border-slate-800 rounded-md p-3">
-              <h1>Chat</h1>
               <div className="h-[80%] overflow-y-scroll">
                 {chatMessages &&
                   chatMessages.length > 0 &&
                   chatMessages.map((message) => (
-                    <div key={`${message.userId}${message.msgTime}`} className="flex flex-row">
-                      <p>{message.message}</p>
-                    </div>
+                    <>
+                      {/* Chat Card */}
+                      <div className={`flex flex-row ${user?.id === message?.userId? chatBubble.justEnd:chatBubble.justStart}`}>
+                        <article className="flex flex-col">
+                          <span className="flex flex-row justify-end">
+                            {message.name}
+                          </span>
+                          <div
+                            className={`w-full max-w-[320px] p-2 ${user?.id === message.userId? chatBubble.bgGreen:chatBubble.bgSlate} text-white`}
+                          >
+                            <p className="break-words">
+                              {message.message}
+                            </p>
+                          </div>
+                          <span className={`flex flex-row ${user?.id === message?.userId? chatBubble.justEnd:chatBubble.justStart}`}>
+                            {new Date(message.msgTime).toDateString()} {new Date(message.msgTime).toTimeString().split(' ')[0]}
+                          </span>
+                        </article>
+                      </div>
+                    </>
                   ))}
               </div>
             </section>
