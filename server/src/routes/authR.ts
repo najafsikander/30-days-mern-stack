@@ -1,11 +1,12 @@
 import {Router, Request, Response, NextFunction} from 'express';
 import { log, warn } from "../utils/logger";
 import AuthController from '../controller/authC';
-
+import { changePassSchema, loginSchema, registerSchema, resetPassSchema } from '../validators/auth.validator';
+import Validator from '../middlewares/joiValidator';
 const router = Router();
 const authController  = new AuthController();
 
-router.post('/login', async (req:Request, res: Response, next:NextFunction) => {
+router.post('/login',Validator(loginSchema), async (req:Request, res: Response, next:NextFunction) => {
     try {
         const {email, password} = req.body;
         const user = await authController.login(email, password);
@@ -16,7 +17,7 @@ router.post('/login', async (req:Request, res: Response, next:NextFunction) => {
     }
 });
 
-router.post('/signup', async (req:Request, res:Response, next:NextFunction) => {
+router.post('/signup',Validator(registerSchema), async (req:Request, res:Response, next:NextFunction) => {
     try {
         const {user} = req.body;
         const newUser = await authController.signup(user);
@@ -27,7 +28,7 @@ router.post('/signup', async (req:Request, res:Response, next:NextFunction) => {
     }
 });
 
-router.patch('/changePassword/:id', async (req:Request, res:Response, next:NextFunction) => {
+router.patch('/changePassword/:id',Validator(changePassSchema), async (req:Request, res:Response, next:NextFunction) => {
     try {
         const {id} = req.params;
         const {oldPassword, password} = req.body;
@@ -39,7 +40,7 @@ router.patch('/changePassword/:id', async (req:Request, res:Response, next:NextF
     }
 });
 
-router.post('/sendResetPasswordMail',async (req:Request, res:Response, next:NextFunction) => {
+router.post('/sendResetPasswordMail',Validator(resetPassSchema),async (req:Request, res:Response, next:NextFunction) => {
     try {
         const {email} = req.body;
         const message = await authController.sendResetPasswordMail(email);
