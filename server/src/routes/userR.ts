@@ -1,6 +1,8 @@
 import { Router, Request,Response, NextFunction } from "express";
 import UserController from "../controller/userC";
 import { log, warn } from "../utils/logger";
+import Validator from "../middlewares/joiValidator";
+import { saveEditUserSchema } from "../validators/user.validator";
 
 const router = Router();
 const userController = new UserController();
@@ -30,7 +32,7 @@ router.get('/:id',async (req:Request, res:Response, next:NextFunction) => {
     }
 });
 
-router.post('/user', async (req:Request, res:Response, next:NextFunction) => {
+router.post('/user', Validator(saveEditUserSchema), async (req:Request, res:Response, next:NextFunction) => {
     try {
         const {user} = req.body;
         const newUser = await userController.createUser(user);
@@ -42,7 +44,7 @@ router.post('/user', async (req:Request, res:Response, next:NextFunction) => {
     }
 });
 
-router.put('/:id', async (req:Request, res:Response, next:NextFunction) => {
+router.put('/:id', Validator(saveEditUserSchema), async (req:Request, res:Response, next:NextFunction) => {
     try {
         const {id} = req.params;
         const {user} = req.body;
