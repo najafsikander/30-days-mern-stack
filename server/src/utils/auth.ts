@@ -13,9 +13,9 @@ export const matchUserPassword = (password: string, hash: string):boolean => {
     return bcrypt.compareSync(password, hash);
 }
 
-export const signJwtToken = (userId:string, hash:string):string => {
+export const signJwtToken = (userId:string, hash:string, role:string):string => {
     const secret= SECRET;
-    const payload = {userId, hash};
+    const payload = {userId, hash, role};
     const token = jwt.sign(payload,secret!.toString(),{expiresIn: '24h'});
     return token;
 }

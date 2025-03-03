@@ -3,12 +3,13 @@ import UserController from "../controller/userC";
 import { log, warn } from "../utils/logger";
 import Validator from "../middlewares/joiValidator";
 import { saveEditUserSchema } from "../validators/user.validator";
+import { checkRole } from "../middlewares/role-verification";
 
 const router = Router();
 const userController = new UserController();
 
 //Route to fetch all users from DB
-router.get('/',async (req:Request, res:Response, next:NextFunction) => {
+router.get('/',checkRole('viewer','view'),async (req:Request, res:Response, next:NextFunction) => {
     try {
         const {skip,limit,sortBy} = req.query;
         const data = await userController.getAllUsers(Number(skip), Number(limit), sortBy?.toString());

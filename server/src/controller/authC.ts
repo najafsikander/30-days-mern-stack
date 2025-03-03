@@ -13,7 +13,7 @@ class AuthController {
             if(!user) throw 'User does not exist!';
             const isPasswordMatched = matchUserPassword(password, user.hash);
             if(!isPasswordMatched) throw 'Invalid password';
-            const jwtToken = signJwtToken(user._id.toString(),user.hash)
+            const jwtToken = signJwtToken(user._id.toString(),user.hash, user.role)
             user.token = jwtToken;
             const newUser = await user.save();
             return newUser;
@@ -50,7 +50,7 @@ class AuthController {
             if(!isPasswordMatched) throw 'Your old password is incorrect';
             const hashedPassword = hashUserPassword(password);
             user.hash = hashedPassword;
-            const signedToken = signJwtToken(user._id.toString(), user.hash);
+            const signedToken = signJwtToken(user._id.toString(), user.hash, user.role);
             user.token = signedToken;
             const savedUser = await new User(user).save();
             info('Saved user: '+savedUser);
@@ -65,7 +65,7 @@ class AuthController {
         try {
             const user = await User.findOne({email});
             if(!user) throw 'User not found';
-            const signedToken = signJwtToken(user._id.toString(),user.hash);
+            const signedToken = signJwtToken(user._id.toString(),user.hash, user.role);
             user.token = signedToken;
             await user.save();
             const mailResponse = await sendResetPasswordMail(email, user.token);
@@ -85,7 +85,7 @@ class AuthController {
             if(!user) throw 'User not found';
             const hashedPassword = hashUserPassword(password);
             user.hash = hashedPassword;
-            const signedToken = signJwtToken(user._id.toString(), user.hash);
+            const signedToken = signJwtToken(user._id.toString(), user.hash,user.role);
             user.token = signedToken;
             await user.save();
             return 'Password reset successfully';
