@@ -12,6 +12,7 @@ import ForgotPasswordPage from "./pages/auth/ForgotPassPage";
 import NewPassPage from "./pages/auth/ForgotPassPage/NewPassPage";
 import PrivateChatPage from "./pages/chat/private";
 import { SocketProvider } from "./context/socketContext";
+import RouteProtection from "./components/RouteProtection";
 
 function App() {
   return (
@@ -19,26 +20,30 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<RootLayout />}>
-            <Route index element={<HomePage />} />
             <Route path="auth">
               <Route path="login" element={<LoginPage />} />
               <Route path="signup" element={<SignupPage />} />
               <Route path="forgotPassword" element={<ForgotPasswordPage />} />
-              <Route path="newPassword" element={<NewPassPage />} />
+              <Route element={<RouteProtection />}>
+                <Route path="newPassword" element={<NewPassPage />} />
+              </Route>
             </Route>
-            <Route path="chat">
-              <Route
-                path="private"
-                element={
-                  <SocketProvider>
-                    <PrivateChatPage />
-                  </SocketProvider>
-                }
-              />
-            </Route>
-            <Route path="profile">
-              <Route index element={<ProfilePage />} />
-              <Route path="changePass" element={<ChangePassPage />} />
+            <Route element={<RouteProtection />}>
+              <Route index element={<HomePage />} />
+              <Route path="chat">
+                <Route
+                  path="private"
+                  element={
+                    <SocketProvider>
+                      <PrivateChatPage />
+                    </SocketProvider>
+                  }
+                />
+              </Route>
+              <Route path="profile">
+                <Route index element={<ProfilePage />} />
+                <Route path="changePass" element={<ChangePassPage />} />
+              </Route>
             </Route>
             <Route path="*" element={<ErrorPage />} />
           </Route>

@@ -3,6 +3,8 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import { useGetAllUsers } from "../../tanstack-queries/users";
 import Form from "./components/Form";
 import SectionCard from "../../components/SectionCard";
+import { useUser } from "../../hooks/useUser";
+import { isAuthorized } from "../../utils/helperFunc";
 const HomePage = () => {
   const [limit] = useState<number>(2);
   const [skip,setSkip] = useState<number>(1); //current page
@@ -15,6 +17,9 @@ const HomePage = () => {
 
   const tableHeading: Array<string> = ["First Name", "Last Name", "Email"];
   const totalPages = useRef<number>(1);
+
+  const {user} = useUser();
+  
 
   console.info({ status, data, error, isFetching });
   const toggleSort = (): void => {
@@ -49,8 +54,10 @@ const HomePage = () => {
     <>
       <div className="w-full text-center mt-3">
         <h1 className="text-white font-bold text-5xl">Vite + React</h1>
-        {/* Table Area */}
-        <SectionCard header="Data Grid">
+        {/* Table Area - can be viewed by admin & viewer */}
+        {
+          isAuthorized(user!.details!.role, ['admin','viewer'])&&
+          <SectionCard header="Data Grid">
           {status === "pending" && isFetching === true && <p>Loading</p>}
           {status === "error" && isFetching === false && <p>Error: {error.message}</p>}
 
@@ -117,11 +124,14 @@ const HomePage = () => {
             </button>
           </div>
         </SectionCard>
+        }
 
-        {/* Form Area */}
-        <SectionCard header="Form Area">
+        {/* Form Area - can be viewed by admin */}
+        { isAuthorized(user!.details!.role, ['admin']) &&
+          <SectionCard header="Form Area">
           <Form refetch={refetch} />
         </SectionCard>
+        }
       </div>
     </>
   );

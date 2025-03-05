@@ -4,6 +4,7 @@ type UserDetails = {
   firstName: string;
   lastName: string;
   email: string;
+  role:string;
 } | null;
 
 type User = {
