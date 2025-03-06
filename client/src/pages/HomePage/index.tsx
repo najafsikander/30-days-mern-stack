@@ -5,6 +5,8 @@ import Form from "./components/Form";
 import SectionCard from "../../components/SectionCard";
 import { useUser } from "../../hooks/useUser";
 import { isAuthorized } from "../../utils/helperFunc";
+import { Trans, useTranslation } from "react-i18next";
+import Button from "../../components/Button";
 const HomePage = () => {
   const [limit] = useState<number>(2);
   const [skip,setSkip] = useState<number>(1); //current page
@@ -19,6 +21,29 @@ const HomePage = () => {
   const totalPages = useRef<number>(1);
 
   const {user} = useUser();
+  const {t,i18n} = useTranslation();
+  const [currLang, setCurrlang] = useState<string>('ar');
+
+  const toggleLanguage = () => {
+    console.log('Current language: ', currLang);
+    if(currLang === 'ar') {
+      setCurrlang('en');
+    }
+
+    if(currLang === 'en') {
+      setCurrlang('ar');
+    }
+  }
+
+  useEffect(() => {
+    if(currLang === 'ar') {
+      i18n.changeLanguage('en');
+    }
+
+    if(currLang === 'en') {
+      i18n.changeLanguage('ar');
+    }
+  }, [currLang, i18n]);
   
 
   console.info({ status, data, error, isFetching });
@@ -54,6 +79,20 @@ const HomePage = () => {
     <>
       <div className="w-full text-center mt-3">
         <h1 className="text-white font-bold text-5xl">Vite + React</h1>
+        {/* i18n Area Example */}
+        <SectionCard header="i18n Example">
+          <h1>Below are the example by using 't' & i18n</h1>
+          <p>{t('title')}</p>
+          <p>
+            <Trans i18nKey={'description.part1'}>
+            To get started, edit <code>src/App.js</code> and save to reload.
+            </Trans>
+          </p>
+          <p>{t('description.part2')}</p>
+          <Button label={currLang} type="button" onClick={toggleLanguage}></Button>
+        </SectionCard>
+
+
         {/* Table Area - can be viewed by admin & viewer */}
         {
           isAuthorized(user!.details!.role, ['admin','viewer'])&&
