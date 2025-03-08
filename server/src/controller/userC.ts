@@ -5,10 +5,12 @@ import { __dirname, getUploadPath } from "../utils/directory";
 import path from "path";
 class UserController {
 
-    async getAllUsers(skip:number=0, limit:number=0, sortBy:string='-createdAt'){
+    async getAllUsers(skip:number=0, limit:number=0, sortBy:string='-createdAt', email?:string){
         try {
-            info(`Skip: ${skip} & limit ${limit} & sortBy ${sortBy}`);
-            const users = await User.find().limit(limit).skip((skip-1)*limit).sort(sortBy);
+            info(`Skip: ${skip} & limit ${limit} & sortBy ${sortBy} & email ${email}`);
+            let query:{email?: string} = {};
+            if(email) query.email = email;
+            const users = await User.find(query).limit(limit).skip((skip-1)*limit).sort(sortBy);
             const usersCount = await User.where().countDocuments();
             info('Users: ' + users);
             info('Users count: ' + usersCount);

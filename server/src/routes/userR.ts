@@ -11,8 +11,8 @@ const userController = new UserController();
 //Route to fetch all users from DB
 router.get('/',checkRole(['admin','viewer'],'view'),async (req:Request, res:Response, next:NextFunction) => {
     try {
-        const {skip,limit,sortBy} = req.query;
-        const data = await userController.getAllUsers(Number(skip), Number(limit), sortBy?.toString());
+        const {skip,limit,sortBy,email} = req.query;
+        const data = await userController.getAllUsers(Number(skip), Number(limit), sortBy?.toString(), email!.toString());
         log('Data: '+data);
         res.status(200).json(data);
     } catch(err) {
