@@ -18,10 +18,10 @@ type responseMulti = {
 }
 
 
-export function useGetAllUsers (skip:number, limit:number, sortBy:string)  {
+export function useGetAllUsers (skip:number, limit:number, sortBy:string, searchEmail:string)  {
     return useQuery({
         queryKey:['users'],
-        queryFn:async () => fetcher<responseMulti>(getAllUsers+`?skip=${skip}&limit=${limit}&sortBy=${sortBy}`)
+        queryFn:async () => fetcher<responseMulti>(getAllUsers+`?skip=${skip}&limit=${limit}&sortBy=${sortBy}&email=${searchEmail}`)
     })
 }
 
