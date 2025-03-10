@@ -7,7 +7,7 @@ import helmet from "helmet";
 import fileUpload from 'express-fileupload';
 import path from 'path';
 import { __dirname } from './utils/directory';
-import { openConnection } from './utils/connection';
+import { openConnection} from './utils/connection';
 import v1 from './routes';
 import reportError from './middlewares/error';
 import { info, log } from './utils/logger';
@@ -17,6 +17,7 @@ import protectRoutes from './middlewares/jwt-verification';
 import './utils/config';
 import { verifySocketAuthentication } from './middlewares/socket-auth';
 import { privateChatHandler } from './socketHandlers/privateChatHandler';
+import { connectRedis } from './utils/redis';
 
 //Creating express app
 const app:Express = express();
@@ -59,4 +60,5 @@ io.on('connection', (socket) => {
 httpServer.listen(port, () => {
     info('listening on port: ' + port);
     openConnection();
+    connectRedis();
 });
