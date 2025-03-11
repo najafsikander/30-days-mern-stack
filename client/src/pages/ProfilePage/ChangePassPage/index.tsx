@@ -42,7 +42,8 @@ const ChangePassPage:React.FC<Props> = ({forgotPass=false,token}) => {
             if(!response.ok) throw result.error;
             const userObj = {
                 id: result.user._id,
-                token: result.user.token
+                token: result.user.token,
+                details: result.user
             };
             setUser(userObj);
             localStorage.removeItem('token');
