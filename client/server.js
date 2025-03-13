@@ -7,9 +7,9 @@ const port = process.env.PORT || 5173
 const base = process.env.BASE || '/'
 
 // Cached production assets
-const templateHtml = isProduction
-  ? await fs.readFile('./dist/client/index.html', 'utf-8')
-  : ''
+const templateHtml = isProduction ?
+  await fs.readFile('./dist/client/index.html', 'utf-8') :
+  ''
 
 // Create http server
 const app = express()
@@ -18,9 +18,13 @@ const app = express()
 /** @type {import('vite').ViteDevServer | undefined} */
 let vite
 if (!isProduction) {
-  const { createServer } = await import('vite')
+  const {
+    createServer
+  } = await import('vite')
   vite = await createServer({
-    server: { middlewareMode: true },
+    server: {
+      middlewareMode: true
+    },
     appType: 'custom',
     base,
   })
@@ -29,7 +33,9 @@ if (!isProduction) {
   const compression = (await import('compression')).default
   const sirv = (await import('sirv')).default
   app.use(compression())
-  app.use(base, sirv('./dist/client', { extensions: [] }))
+  app.use(base, sirv('./dist/client', {
+    extensions: []
+  }))
 }
 
 // Serve HTML
@@ -51,13 +57,18 @@ app.use('*', async (req, res) => {
       render = (await import('./dist/server/entry-server.js')).render
     }
 
-    const rendered = await render(url)
-
+    const rendered = await render(url);
     const html = template
-      .replace(`<!--app-head-->`, rendered.head ?? '')
-      .replace(`<!--app-html-->`, rendered.html ?? '')
+      .replace(`<!--app-html-->`, rendered.html ?? "")
+      .replace(
+        `<!--react-query-state-->`,
+        `<script>window.__REACT_QUERY_STATE__ = ${JSON.stringify(rendered.dehydratedState)}</script>`
+      );
 
-    res.status(200).set({ 'Content-Type': 'text/html' }).send(html)
+
+    res.status(200).set({
+      'Content-Type': 'text/html'
+    }).send(html)
   } catch (e) {
     vite?.ssrFixStacktrace(e)
     console.log(e.stack)

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router";
+import {  Routes, Route } from "react-router";
 import "./App.css";
 import ErrorPage from "./pages/404Page";
 import HomePage from "./pages/HomePage";
@@ -17,7 +17,6 @@ import RouteProtection from "./components/RouteProtection";
 function App() {
   return (
     <UserProvider>
-      <BrowserRouter>
         <Routes>
           <Route element={<RootLayout />}>
             <Route path="auth">
@@ -48,7 +47,6 @@ function App() {
             <Route path="*" element={<ErrorPage />} />
           </Route>
         </Routes>
-      </BrowserRouter>
     </UserProvider>
   );
 }
