@@ -1,5 +1,9 @@
+import NProgress from 'nprogress';
+
 export const fetcher = async <T>(url:string):Promise<T> => {
-    const response = await fetch(url, {
+      NProgress.start();
+     try {
+      const response = await fetch(url, {
         headers:{
             'Authorization':'Bearer '+localStorage.getItem('token')
         }
@@ -10,4 +14,7 @@ export const fetcher = async <T>(url:string):Promise<T> => {
     throw new Error(data.error || 'An unexpected error occurred');
   }
   return data;
+     } finally {
+      NProgress.done();
+     }
 };

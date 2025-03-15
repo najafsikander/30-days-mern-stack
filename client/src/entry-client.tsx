@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider,hydrate } from "@tanstack/react-query"
 import "./index.css";
 import App from "./App";
 import "./lib/i18n.ts";
+import LoadingBar from "./components/LoadingBar.tsx";
 
 declare global {
   interface Window {
@@ -23,6 +24,7 @@ hydrateRoot(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+      <LoadingBar/>
         <Suspense fallback="loading..">
           <App />
         </Suspense>

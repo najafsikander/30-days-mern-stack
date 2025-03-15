@@ -28,7 +28,11 @@ function App() {
               </Route>
             </Route>
             <Route element={<RouteProtection />}>
-              <Route index element={<HomePage />} />
+              <Route index element={
+                <SocketProvider>
+                <HomePage />
+                </SocketProvider>
+                } />
               <Route path="chat">
                 <Route
                   path="private"

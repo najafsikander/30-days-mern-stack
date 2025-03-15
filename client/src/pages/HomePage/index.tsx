@@ -7,11 +7,12 @@ import { useUser } from "../../hooks/useUser";
 import { isAuthorized } from "../../utils/helperFunc";
 import { Trans, useTranslation } from "react-i18next";
 import Button from "../../components/Button";
+import { useSocket } from "../../hooks/useSocket";
 const HomePage = () => {
   const [limit] = useState<number>(2);
   const [skip, setSkip] = useState<number>(1); //current page
   const [sortBy, setSortBy] = useState<string>("-createdAt");
-  const [emailFilter, setEmailFilter] = useState<string>('');
+  const [emailFilter, setEmailFilter] = useState<string>("");
   const { status, data, error, isFetching, refetch } = useGetAllUsers(
     skip,
     limit,
@@ -22,7 +23,8 @@ const HomePage = () => {
   const tableHeading: Array<string> = ["First Name", "Last Name", "Email"];
   const totalPages = useRef<number>(1);
 
-  const { user } = useUser();
+  const { user, logout } = useUser();
+  const { socket, disconnectSocket } = useSocket();
   const { t, i18n } = useTranslation();
   const [currLang, setCurrlang] = useState<string>("ar");
 
@@ -64,9 +66,19 @@ const HomePage = () => {
   }, [sortBy, skip]);
 
   useEffect(() => {
-    if(emailFilter === '') refetch();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[emailFilter])
+    if (emailFilter === "") refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [emailFilter]);
+
+  useEffect(() => {
+    if (error != null && error.message != null) {
+      console.log("Error in query: ", error);
+      socket?.disconnect();
+      disconnectSocket();
+      logout();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
 
   const changePage = (action: string): void => {
     if (action === "next") {
@@ -80,16 +92,16 @@ const HomePage = () => {
     }
   };
 
-  const handleFilterForm = (action:string) => {
-    if(action === 'submit') {
-      console.info('Submitting form');
+  const handleFilterForm = (action: string) => {
+    if (action === "submit") {
+      console.info("Submitting form");
       refetch();
     }
 
-    if(action === 'reset') {
-      setEmailFilter('');
+    if (action === "reset") {
+      setEmailFilter("");
     }
-  }
+  };
 
   return (
     <>
@@ -122,9 +134,31 @@ const HomePage = () => {
 
             {/* Filter Area */}
             <div className="w-full flex flex-row gap-1">
-            <input className="basis-3/4 p-2 border-2 border-slate-800 rounded-md mb-2" type="email" id="search" name="search" required min="3" placeholder="Search Email" value={emailFilter} onChange={(e) => setEmailFilter(e.target.value)}/>
-            <span className="basis-1/4"><Button label="Submit" type="button" onClick={() => handleFilterForm('submit')}/></span>
-            <span className="basis-1/4"><Button label="Reset" type="button" onClick={() => handleFilterForm('reset')}/></span>
+              <input
+                className="basis-3/4 p-2 border-2 border-slate-800 rounded-md mb-2"
+                type="email"
+                id="search"
+                name="search"
+                required
+                min="3"
+                placeholder="Search Email"
+                value={emailFilter}
+                onChange={(e) => setEmailFilter(e.target.value)}
+              />
+              <span className="basis-1/4">
+                <Button
+                  label="Submit"
+                  type="button"
+                  onClick={() => handleFilterForm("submit")}
+                />
+              </span>
+              <span className="basis-1/4">
+                <Button
+                  label="Reset"
+                  type="button"
+                  onClick={() => handleFilterForm("reset")}
+                />
+              </span>
             </div>
 
             {/* Sorting action */}

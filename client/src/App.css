@@ -3,3 +3,7 @@
   margin: 0 auto;
 }
 
+#nprogress .bar {
+  background:rgb(30 41 59 / var(--tw-bg-opacity, 1)) !important;
+  }
+  
