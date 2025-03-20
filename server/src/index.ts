@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import helmet from "helmet";
 import fileUpload from 'express-fileupload';
 import path from 'path';
+import * as Sentry from "@sentry/node"
 import { __dirname } from './utils/directory';
 import { openConnection} from './utils/connection';
 import v1 from './routes';
@@ -15,6 +16,7 @@ import protectRoutes from './middlewares/jwt-verification';
 
 //Loading all env variables
 import './utils/config';
+import '../instrument.mjs';
 import { verifySocketAuthentication } from './middlewares/socket-auth';
 import { privateChatHandler } from './socketHandlers/privateChatHandler';
 import { connectRedis } from './utils/redis';
@@ -42,6 +44,8 @@ app.use(fileUpload());
 app.use(protectRoutes());
 //Loading V1 routes
 app.use('/v1',v1);
+// The error handler must be registered before any other error middleware and after all controllers
+Sentry.setupExpressErrorHandler(app);
 //Middleware to report all errors
 app.use(reportError);
 
