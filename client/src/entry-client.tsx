@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider,hydrate } from "@tanstack/react-query"
 import "./index.css";
 import App from "./App";
 import "./lib/i18n.ts";
+import "../instrument.js";
 import LoadingBar from "./components/LoadingBar.tsx";
 
 declare global {

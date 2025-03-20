@@ -4,6 +4,8 @@ import { StaticRouter } from "react-router-dom";
 import App from "./App";
 import { QueryClient, QueryClientProvider, dehydrate } from "@tanstack/react-query";
 import LoadingBar from "./components/LoadingBar";
+import "../instrument.js";
+
 
 const queryClient = new QueryClient();
 
