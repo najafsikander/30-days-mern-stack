@@ -8,6 +8,7 @@ import fileUpload from 'express-fileupload';
 import path from 'path';
 import * as Sentry from "@sentry/node"
 import { __dirname } from './utils/directory';
+import 'newrelic';
 import { openConnection} from './utils/connection';
 import v1 from './routes';
 import reportError from './middlewares/error';
@@ -15,11 +16,14 @@ import { info, log } from './utils/logger';
 import protectRoutes from './middlewares/jwt-verification';
 
 //Loading all env variables
+import dotenv from 'dotenv';
+dotenv.config();
 import './utils/config';
 import '../instrument.mjs';
 import { verifySocketAuthentication } from './middlewares/socket-auth';
 import { privateChatHandler } from './socketHandlers/privateChatHandler';
 import { connectRedis } from './utils/redis';
+
 
 //Creating express app
 const app:Express = express();
