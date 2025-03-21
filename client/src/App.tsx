@@ -14,7 +14,7 @@ const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 const ChangePassPage = lazy(() => import('./pages/ProfilePage/ChangePassPage'));
 const ForgotPasswordPage = lazy(() => import('./pages/auth/ForgotPassPage'));
 const NewPassPage = lazy(() => import('./pages/auth/ForgotPassPage/NewPassPage'));
-const PrivateChatPage = lazy(() => import('./pages/ProfilePage'));
+const PrivateChatPage = lazy(() => import('./pages/chat/private'));
 
 function App() {
   return (
