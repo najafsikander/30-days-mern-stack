@@ -15,7 +15,7 @@ import reportError from './middlewares/error';
 import { info, log } from './utils/logger';
 import protectRoutes from './middlewares/jwt-verification';
 
-//Loading all env variables.
+//Loading all env variables..
 import dotenv from 'dotenv';
 dotenv.config();
 import './utils/config';
