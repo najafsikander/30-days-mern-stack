@@ -11,8 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - name: Install dependencies
-        run: npm install
       - name: Update CA certificates
         run: |
           sudo apt-get update
