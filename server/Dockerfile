@@ -30,6 +30,9 @@ COPY . .
 # Build application
 RUN npm run build
 
+# Confirm `dist/` exists before continuing
+RUN ls -la /app/dist
+
 # Remove development dependencies
 RUN npm prune --omit=dev
 
