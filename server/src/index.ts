@@ -10,7 +10,7 @@ import * as Sentry from "@sentry/node"
 import { __dirname } from './utils/directory.js';
 import 'newrelic';
 import { openConnection} from './utils/connection.js';
-import v1 from './routes';
+import v1 from './routes/index.js';
 import reportError from './middlewares/error.js';
 import { info, log } from './utils/logger.js';
 import protectRoutes from './middlewares/jwt-verification.js';

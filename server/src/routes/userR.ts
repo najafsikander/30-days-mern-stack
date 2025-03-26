@@ -1,9 +1,9 @@
 import { Router, Request,Response, NextFunction } from "express";
-import UserController from "../controller/userC";
-import { log, warn } from "../utils/logger";
-import Validator from "../middlewares/joiValidator";
-import { saveEditUserSchema } from "../validators/user.validator";
-import { checkRole } from "../middlewares/role-verification";
+import UserController from "../controller/userC.js";
+import { log, warn } from "../utils/logger.js";
+import Validator from "../middlewares/joiValidator.js";
+import { saveEditUserSchema } from "../validators/user.validator.js";
+import { checkRole } from "../middlewares/role-verification.js";
 
 const router = Router();
 const userController = new UserController();

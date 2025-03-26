@@ -1,8 +1,8 @@
 import {Router, Request, Response, NextFunction} from 'express';
-import { log, warn } from "../utils/logger";
-import AuthController from '../controller/authC';
-import { changePassSchema, loginSchema, registerSchema, resetPassSchema } from '../validators/auth.validator';
-import Validator from '../middlewares/joiValidator';
+import { log, warn } from "../utils/logger.js";
+import AuthController from '../controller/authC.js';
+import { changePassSchema, loginSchema, registerSchema, resetPassSchema } from '../validators/auth.validator.js';
+import Validator from '../middlewares/joiValidator.js';
 const router = Router();
 const authController  = new AuthController();
 
