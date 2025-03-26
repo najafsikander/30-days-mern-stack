@@ -26,7 +26,6 @@ RUN npm ci --include=dev --verbose
 
 # Copy application code
 COPY . .
-COPY dist/ /app/dist/
 
 # Build application
 RUN npm run build
