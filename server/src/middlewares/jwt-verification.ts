@@ -1,8 +1,8 @@
 import {expressjwt} from 'express-jwt';
-import { SECRET } from '../utils/config';
+import { SECRET } from '../utils/config.js';
 import jwt from 'jsonwebtoken';
-import { log } from '../utils/logger';
-import { AuthenticatedRequest } from '../utils/intefaces';
+import { log } from '../utils/logger.js';
+import { AuthenticatedRequest } from '../utils/intefaces.js';
 
 
 const protectRoutes = () => {

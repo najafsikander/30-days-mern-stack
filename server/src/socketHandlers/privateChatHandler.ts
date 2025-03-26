@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { info } from "../utils/logger";
+import { info } from "../utils/logger.js";
 
 type User = {
     userId: string;

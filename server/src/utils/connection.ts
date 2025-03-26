@@ -1,6 +1,6 @@
 import { connect } from "mongoose";
-import { info, error } from "./logger";
-import { DB_APP, DB_CLUSTER, DB_NAME, DB_PASSWORD, DB_USER } from "./config";
+import { info, error } from "./logger.js";
+import { DB_APP, DB_CLUSTER, DB_NAME, DB_PASSWORD, DB_USER } from "./config.js";
 
 export const openConnection = async () => {
 

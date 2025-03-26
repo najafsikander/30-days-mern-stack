@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import {error} from '../utils/logger';
+import {error} from '../utils/logger.js';
 
 const reportError = (err: any, req: Request, res: Response, next: NextFunction) =>{
     error('Error in global middleware:' + err);

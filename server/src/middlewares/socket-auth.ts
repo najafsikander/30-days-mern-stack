@@ -1,8 +1,8 @@
 import { Socket } from "socket.io";
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
-import { SECRET } from "../utils/config";
-import { log } from "../utils/logger";
+import { SECRET } from "../utils/config.js";
+import { log } from "../utils/logger.js";
 
 
 export const verifySocketAuthentication = (socket: Socket, next: (err?: any) => void) => {

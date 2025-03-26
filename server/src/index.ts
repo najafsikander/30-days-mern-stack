@@ -1,28 +1,28 @@
 import express,{Express, Request, Response, urlencoded, json} from 'express';
 import { createServer } from 'http';
-import { initializeSocket } from './utils/socket';
+import { initializeSocket } from './utils/socket.js';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from "helmet";
 import fileUpload from 'express-fileupload';
 import path from 'path';
 import * as Sentry from "@sentry/node"
-import { __dirname } from './utils/directory';
+import { __dirname } from './utils/directory.js';
 import 'newrelic';
-import { openConnection} from './utils/connection';
+import { openConnection} from './utils/connection.js';
 import v1 from './routes';
-import reportError from './middlewares/error';
-import { info, log } from './utils/logger';
-import protectRoutes from './middlewares/jwt-verification';
+import reportError from './middlewares/error.js';
+import { info, log } from './utils/logger.js';
+import protectRoutes from './middlewares/jwt-verification.js';
 
 //Loading all env variables..
 import dotenv from 'dotenv';
 dotenv.config();
-import './utils/config';
+import './utils/config.js';
 import '../instrument.mjs';
-import { verifySocketAuthentication } from './middlewares/socket-auth';
-import { privateChatHandler } from './socketHandlers/privateChatHandler';
-import { connectRedis } from './utils/redis';
+import { verifySocketAuthentication } from './middlewares/socket-auth.js';
+import { privateChatHandler } from './socketHandlers/privateChatHandler.js';
+import { connectRedis } from './utils/redis.js';
 
 
 //Creating express app

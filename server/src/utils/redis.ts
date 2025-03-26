@@ -1,5 +1,5 @@
 import redis from 'redis';
-import { error, info } from './logger';
+import { error, info } from './logger.js';
 
 export let redisClient:any = null;
 

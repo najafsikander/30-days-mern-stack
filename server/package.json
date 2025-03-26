@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "npx tsc && npm run sentry:sourcemaps",
-    "start": "NODE_OPTIONS='--experimental-specifier-resolution=node' node --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"newrelic/esm-loader.mjs\", pathToFileURL(\"./\"));' dist/index.js",
+    "start": "node --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"newrelic/esm-loader.mjs\", pathToFileURL(\"./\"));' dist/index.js",
     "dev": "nodemon --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"newrelic/esm-loader.mjs\", pathToFileURL(\"./\"));' --exec tsx src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "sentry:sourcemaps": "SENTRY_LOG_LEVEL=debug sentry-cli sourcemaps inject --org zone-delivery-services --project node-express ./dist && SENTRY_LOG_LEVEL=debug sentry-cli sourcemaps upload --org zone-delivery-services --project node-express ./dist"
