@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { SALT_ROUND, SECRET } from './config';
+import { SALT_ROUND, SECRET } from './config.js';
 
 export const hashUserPassword = (password:string):string => {
     const saltRounds= Number(SALT_ROUND) || 10;

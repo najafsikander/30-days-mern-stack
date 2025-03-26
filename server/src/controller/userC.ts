@@ -1,9 +1,9 @@
 import { FileArray } from "express-fileupload";
-import User, { IUser } from "../models/userM";
-import { info, error } from "../utils/logger";
-import { __dirname, getUploadPath } from "../utils/directory";
+import User, { IUser } from "../models/userM.js";
+import { info, error } from "../utils/logger.js";
+import { __dirname, getUploadPath } from "../utils/directory.js";
 import path from "path";
-import { redisClient } from "../utils/redis";
+import { redisClient } from "../utils/redis.js";
 class UserController {
 
 

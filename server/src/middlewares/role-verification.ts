@@ -1,7 +1,7 @@
 import {Response,NextFunction} from "express";
-import { AuthenticatedRequest } from "../utils/intefaces";
-import { roles } from "../data/roles";
-import { log } from "../utils/logger";
+import { AuthenticatedRequest } from "../utils/intefaces.js";
+import { roles } from "../data/roles.js";
+import { log } from "../utils/logger.js";
 export const checkRole = (allowedRoles:string[], action:string) => {
     return (req:AuthenticatedRequest, res:Response, next:NextFunction) => {
         log('Role: ' + req.role);

@@ -1,7 +1,7 @@
 
 import { Request,Response,NextFunction } from "express";
 import { ObjectSchema } from "joi";
-import { warn } from "../utils/logger";
+import { warn } from "../utils/logger.js";
 
  const Validator =  (Schema:ObjectSchema) => {
     return async (req:Request,res:Response,next:NextFunction) => {

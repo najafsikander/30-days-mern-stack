@@ -1,8 +1,8 @@
-import User from "../models/userM";
-import { info,error } from "../utils/logger";
-import { IUser } from "../models/userM";
-import { hashUserPassword,matchUserPassword, signJwtToken } from "../utils/auth";
-import { sendResetPasswordMail } from "../utils/sendMail";
+import User from "../models/userM.js";
+import { info,error } from "../utils/logger.js";
+import { IUser } from "../models/userM.js";
+import { hashUserPassword,matchUserPassword, signJwtToken } from "../utils/auth.js";
+import { sendResetPasswordMail } from "../utils/sendMail.js";
 
 class AuthController {
     async login (email:string, password: string) {
