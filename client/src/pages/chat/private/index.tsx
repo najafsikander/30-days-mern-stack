@@ -210,7 +210,7 @@ export default PrivateChatPage;
 
 //Fully working page wise socket implementation
 // useEffect(() => {
-//   const socket = io("http://localhost:8080", {
+//   const socket = io("http://localhost:3000", {
 //     auth: { token: user!.token }
 //   });
 

@@ -24,7 +24,7 @@ const LoginForm: React.FC = () => {
     try {
         console.log("SUCCESS", data);
         const request = data;
-        const response = await fetch('http://localhost:8080/v1/auth/login', {
+        const response = await fetch('http://localhost:3000/v1/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -5,6 +5,7 @@ import { UserProvider } from "./context/userContext";
 import { SocketProvider } from "./context/socketContext";
 import RouteProtection from "./components/RouteProtection";
 import { lazy, Suspense } from "react";
+import RatingsPage from "./pages/ratings";
 
 const ErrorPage = lazy(() => import('./pages/404Page'));
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -50,6 +51,7 @@ function App() {
                 <Route index element={<ProfilePage />} />
                 <Route path="changePass" element={<ChangePassPage />} />
               </Route>
+              <Route path="ratings" element={<RatingsPage/>}/>
             </Route>
             <Route path="*" element={<ErrorPage />} />
           </Route>

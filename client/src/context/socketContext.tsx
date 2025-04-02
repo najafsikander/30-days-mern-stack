@@ -1,7 +1,7 @@
 import { createContext, FC, ReactNode, useEffect, useState, useRef } from "react";
 import { Socket, io } from "socket.io-client";
 
-const SERVER_URL = 'http://localhost:8080';
+const SERVER_URL = 'http://localhost:3000';
 
 interface SocketContextType {
     socket: Socket | null;

@@ -19,7 +19,7 @@ const Form: React.FC<Props> = ({ refetch }) => {
   const onSubmit = async (data: MainFormData) => {
     try {
       console.log("SUCCESS", data);
-      const result = await fetch("http://localhost:8080/v1/users/user", {
+      const result = await fetch("http://localhost:3000/v1/users/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
