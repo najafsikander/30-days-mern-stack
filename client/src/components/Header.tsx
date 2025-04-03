@@ -16,6 +16,7 @@ const Header:React.FC = () => {
                     <>
                     <li><Link to={'/chat/private'}>Chat</Link></li>
                     <li><Link to={'/profile'}>Profile</Link></li>
+                    <li><Link to={'/ratings'}>Ratings</Link></li>
                     </>}
                 </ul>
             </nav>
