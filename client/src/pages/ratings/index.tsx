@@ -5,7 +5,11 @@ import { useForm } from "react-hook-form";
 import { RatingFormData, RatinngSchema } from "../../utils/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "../../components/Button";
+import { useUser } from "../../hooks/useUser";
+import { giveUserRating } from "../../services-url/users";
 const RatingsPage: React.FC = () => {
+
+  const {user} = useUser();
   const {
     register,
     reset,
@@ -15,9 +19,34 @@ const RatingsPage: React.FC = () => {
     resolver: zodResolver(RatinngSchema),
   });
 
-  const onSubmitRatings = (data: RatingFormData) => {
-    console.log("Form Data:", data);
-    reset();
+  const onSubmitRatings = async (data: RatingFormData) => {
+    try {
+      console.log("Submitted ratings: ", data);
+      const request = {
+        remark: data.remark,
+        rating: data.rating,
+        userId:user?.id
+      };
+      const response  = await fetch(giveUserRating, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + user?.token,
+        },
+        body: JSON.stringify(request),
+      });
+
+      console.log('Response: ' + response);
+      const result = await response.json()
+      console.log('Result:' + result);
+      if(!response.ok) throw result.error;
+
+      alert('Rating submitted successfully');
+      reset();
+    } catch (error) {
+      console.warn("Error caught while submitting ratings: ", error);
+      alert("Error Occured");
+    }
   };
 
   return (
@@ -44,11 +73,11 @@ const RatingsPage: React.FC = () => {
                   className="w-full p-2 border-2 border-slate-800 rounded-md mb-2"
                   type="text"
                   placeholder="Enter Remarks"
-                  {...register("remarks")}
+                  {...register("remark")}
                 />
-                {errors.remarks && (
+                {errors.remark && (
                   <span className="error-message">
-                    {errors.remarks.message}
+                    {errors.remark.message}
                   </span>
                 )}
               </div>

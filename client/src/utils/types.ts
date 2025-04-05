@@ -12,7 +12,7 @@ export type MainFormData = {
 }
 
 export type RatingFormData = {
-    remarks: string;
+    remark: string;
     rating: number;
 }
 
@@ -76,6 +76,6 @@ export const ForgotPasswordSchema: ZodType<MainFormData> = z.object({
 });
 
 export const RatinngSchema: ZodType<RatingFormData> = z.object({
-    remarks: z.string().nonempty(),
+    remark: z.string().nonempty(),
     rating: z.number().min(1).max(5)
 });
