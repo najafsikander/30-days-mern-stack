@@ -11,6 +11,11 @@ export type MainFormData = {
     token?: string;
 }
 
+export type RatingFormData = {
+    remarks: string;
+    rating: number;
+}
+
 
 export type FormFieldProps = {
     type: string;
@@ -68,4 +73,9 @@ export const NewPassSchema: ZodType<MainFormData> = z.object({
 
 export const ForgotPasswordSchema: ZodType<MainFormData> = z.object({
     email: z.string().email()
+});
+
+export const RatinngSchema: ZodType<RatingFormData> = z.object({
+    remarks: z.string().nonempty(),
+    rating: z.number().min(1).max(5)
 });
