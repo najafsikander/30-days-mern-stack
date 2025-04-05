@@ -81,4 +81,17 @@ router.patch('/updateUserProfilePicture/:id', async (req:Request, res:Response, 
         next(err);
     }
 });
+
+router.post('/giveUserRating', async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        log("Ratings body: "+ JSON.stringify(req.body));
+        const {rating, remark,userId} = req.body;
+        const newRating = await userController.giveUserRating(rating, remark, userId);
+        log('User rating given: '+newRating);
+        res.status(201).json(newRating);
+    } catch (err) {
+        warn('Error caught in give user rating route: ' + err);
+        next(err);
+    }
+});
 export default router;

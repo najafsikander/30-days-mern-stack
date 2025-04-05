@@ -4,6 +4,8 @@ import { info, error } from "../utils/logger.js";
 import { __dirname, getUploadPath } from "../utils/directory.js";
 import path from "path";
 import { redisClient } from "../utils/redis.js";
+import { Schema } from "mongoose";
+import Rating from "../models/ratingM.js";
 class UserController {
 
 
@@ -18,7 +20,7 @@ class UserController {
                 info('Cached response: ' + JSON.parse(cachedResponse));
                 if (cachedResponse) {
                     const { usersC, totalC } = JSON.parse(cachedResponse);
-                    info('Total users: ' + totalC+' users: ' + usersC);
+                    info('Total users: ' + totalC + ' users: ' + usersC);
                     if (cachedResponse) return { users: usersC, total: totalC };
                 }
             }
@@ -112,6 +114,23 @@ class UserController {
             return newUserDetails;
         } catch (err) {
             error('Error caught in updateUser controller: ' + err);
+            throw err;
+        }
+    }
+
+    async giveUserRating(rating: number, remark: string, userId: Schema.Types.ObjectId) {
+        try {
+            const newRating = {
+                rating,
+                remark,
+                userId
+            }
+            const savedRating = await new Rating(newRating).save();
+
+            info('Rating given: ' + savedRating);
+            return savedRating;
+        } catch (err) {
+            error('Error caught in giveUserRating controller: ' + err);
             throw err;
         }
     }
