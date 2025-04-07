@@ -7,9 +7,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "../../components/Button";
 import { useUser } from "../../hooks/useUser";
 import { giveUserRating } from "../../services-url/users";
+import { useGetAllRating } from "../../tanstack-queries/users";
 const RatingsPage: React.FC = () => {
 
   const {user} = useUser();
+  const {status,data,isFetching,error,refetch} = useGetAllRating();
   const {
     register,
     reset,
@@ -43,11 +45,25 @@ const RatingsPage: React.FC = () => {
 
       alert('Rating submitted successfully');
       reset();
+      refetch();
     } catch (error) {
       console.warn("Error caught while submitting ratings: ", error);
       alert("Error Occured");
     }
   };
+
+  console.log('RTQ: ',{status,data,isFetching,error});
+
+  if (isFetching && status === "pending")
+    return <h1 className="text-white">Loading data...</h1>;
+
+  if (error)
+    return (
+      <h1 className="text-white">
+        Error occured while fetching profile details
+      </h1>
+    );
+
 
   return (
     <>
@@ -58,8 +74,10 @@ const RatingsPage: React.FC = () => {
         <section className="flex flex-row justify-center mt-8">
           <div className="flex flex-col gap-2">
             {/* Comment Cards */}
-            <CommentCard />
-            <CommentCard />
+            {data &&
+            data.map((item) => (
+              <CommentCard key={item._id} rating={item} refetch={refetch}/>
+            ))}
           </div>
         </section>
         <hr className="mt-3 border-slate-700" />
