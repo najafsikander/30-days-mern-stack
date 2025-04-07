@@ -134,6 +134,27 @@ class UserController {
             throw err;
         }
     }
+
+    async getAllRatings() {
+        try {
+            const ratings = await Rating.find().populate('userId', 'firstName lastName profilePic _id');
+            info('Ratings: ' + ratings);
+            return ratings;
+        } catch (err) {
+            error('Error caught in getAllRatings controller: ' + err);
+            throw err;
+        }
+    }
+
+    async deleteUserRating(id: string){
+        try {
+            await Rating.findByIdAndDelete(id);
+            return 'Deleted rating successfully';
+        } catch (err) {
+            error('Error caught in deleteUserRating controller: ' + err);
+            throw err;
+        }
+    }
 }
 
 export default UserController;

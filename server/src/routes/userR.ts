@@ -21,7 +21,7 @@ router.get('/',checkRole(['admin','viewer'],'view'),async (req:Request, res:Resp
     }
 });
 
-router.get('/:id',async (req:Request, res:Response, next:NextFunction) => {
+router.get('/user/:id',async (req:Request, res:Response, next:NextFunction) => {
     try {
         const {id} = req.params;
         const user = await userController.getSingleUser(id);
@@ -45,7 +45,7 @@ router.post('/user', Validator(saveEditUserSchema), async (req:Request, res:Resp
     }
 });
 
-router.put('/:id', Validator(saveEditUserSchema), async (req:Request, res:Response, next:NextFunction) => {
+router.put('/user/:id', Validator(saveEditUserSchema), async (req:Request, res:Response, next:NextFunction) => {
     try {
         const {id} = req.params;
         const {user} = req.body;
@@ -58,7 +58,7 @@ router.put('/:id', Validator(saveEditUserSchema), async (req:Request, res:Respon
     }
 });
 
-router.delete('/:id', async (req:Request, res:Response, next:NextFunction) => {
+router.delete('/user/:id', async (req:Request, res:Response, next:NextFunction) => {
     try {
         const {id} = req.params;
         const deletedUser = await userController.deleteUser(id);
@@ -92,6 +92,29 @@ router.post('/giveUserRating', async (req:Request, res:Response, next:NextFuncti
     } catch (err) {
         warn('Error caught in give user rating route: ' + err);
         next(err);
+    }
+});
+
+router.get('/getAllRatings', async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const data = await userController.getAllRatings();
+        log('Ratings: '+data);
+        res.status(200).json(data);
+    } catch (err) {
+        warn('Error caught in get all ratings route: ' + err);
+        next(err);
+    }
+});
+
+router.delete('/deleteUserRating/:id', async (req:Request, res: Response, next:NextFunction) => {
+    try {
+        const id = req.params.id;
+        const response = await userController.deleteUserRating(id);
+        log('User rating deleted: '+response);
+        res.status(200).json(response);
+    } catch (error) {
+        warn('Error caught in delete user rating route: ' + error);
+        next(error);
     }
 });
 export default router;
